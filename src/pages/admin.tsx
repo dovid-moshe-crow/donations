@@ -1,3 +1,5 @@
+ /* eslint-disable */ 
+
 import { NextPage } from "next";
 import Head from "next/head";
 
