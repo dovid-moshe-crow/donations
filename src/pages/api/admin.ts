@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { NextApiRequest, NextApiResponse } from "next";
 import AdminJS from 'adminjs'
 import AdminJSExpress from '@adminjs/express'

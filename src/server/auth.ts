@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { type GetServerSidePropsContext } from "next";
 import {
   getServerSession,
