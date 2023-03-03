@@ -50,7 +50,7 @@ const BitPage: NextPage = () => {
           Currency: "1",
           Comment: `~${formProps.anonymous == "on"}~${campaignId}~${
             formProps.amb
-          }~${formProps.dedication}`,
+          }~${formProps.dedication}~${multiplier}`,
         }),
       }
     );

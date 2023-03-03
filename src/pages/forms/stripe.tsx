@@ -35,6 +35,7 @@ const StripePage: NextPage = () => {
         className="p-6"
       >
         <Stack>
+          <TextInput type="hidden" value={multiplier} name="multiplier" />
           <AmbSelect campaignId={campaignId} ambassadorId={ambId} />
           <TextInput name="full_name" required label="שם מלא" />
           <TextInput name="email" type="email" label="דואר אלקטרוני" />
