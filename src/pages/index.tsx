@@ -7,9 +7,9 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
-  const ambassadors = api.ambassadors.getAll.useQuery({
-    id: "clehapr800000uta4lstqovd8",
-  });
+  // const ambassadors = api.ambassadors.getAll.useQuery({
+  //   id: "clehapr800000uta4lstqovd8",
+  // });
 
   return (
     <>
