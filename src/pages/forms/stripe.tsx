@@ -44,8 +44,7 @@ const StripePage: NextPage = () => {
           <TextInput name="city" type="text" label="עיר" />
           <Checkbox label="תרומה אנונימית" name="anonymous" />
           <Textarea name="dedication" label="הקדשה" />
-          <MultiSub name="months" noLimitValue="0" />
-          <Amount label="סכום" multiplier={multiplier} />
+          <Amount label="סכום" multiplier={multiplier} currencyFrom={["USD", "ILS"]} currencyTo="USD" noLimitValue="0" sub subName="months" />
           <Button type="submit">תרום</Button>
         </Stack>
       </form>

@@ -19,8 +19,7 @@ import MultiSub from "~/components/MultiSub";
 
 const NedarimCreditPage: NextPage = () => {
   const router = useRouter();
-  const { Mosad1, Mosad2, Multiplier, id, amb} =
-    router.query;
+  const { Mosad1, Mosad2, Multiplier, id, amb } = router.query;
 
   const campaignId =
     typeof id === "string" ? id : "177b5cd5-2a69-4933-992e-1dd3599eb77e";
@@ -125,7 +124,6 @@ const NedarimCreditPage: NextPage = () => {
           <TextInput name="city" type="text" label="עיר" />
           <Checkbox label="תרומה אנונימית" name="anonymous" />
           <Textarea name="dedication" label="הקדשה" />
-          <MultiSub name="payments" noLimitValue="" />
           <Select
             label="סוג כרטיס"
             defaultValue={Object.keys(paymentOptions)[0]}
@@ -139,7 +137,15 @@ const NedarimCreditPage: NextPage = () => {
             id="nedarim"
           ></iframe>
 
-          <Amount label="סכום" multiplier={multiplier} />
+          <Amount
+            label="סכום"
+            multiplier={multiplier}
+            currencyFrom={["USD", "ILS"]}
+            currencyTo="ILS"
+            noLimitValue=""
+            sub
+            subName="payments"
+          />
 
           <Text color="red">{errorMessage}</Text>
           <Button type="submit">תרום</Button>

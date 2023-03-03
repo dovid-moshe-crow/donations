@@ -1,6 +1,7 @@
 import { createTRPCRouter } from "~/server/api/trpc";
 import { ambassadorsRouter } from "~/server/api/routers/ambassadors";
 import { powerlinkRouter } from "./routers/powerlink";
+import { currencyConverterRouter } from "./routers/currency-converter";
 
 /**
  * This is the primary router for your server.
@@ -10,6 +11,7 @@ import { powerlinkRouter } from "./routers/powerlink";
 export const appRouter = createTRPCRouter({
   powerlink: powerlinkRouter,
   ambassadors: ambassadorsRouter,
+  currencyConverter: currencyConverterRouter
 });
 
 // export type definition of API

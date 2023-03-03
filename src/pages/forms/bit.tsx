@@ -81,7 +81,7 @@ const BitPage: NextPage = () => {
           <TextInput name="city" type="text" label="עיר" />
           <Checkbox label="תרומה אנונימית" name="anonymous" />
           <Textarea name="dedication" label="הקדשה" />
-          <Amount label="סכום" multiplier={multiplier} />
+          <Amount label="סכום" multiplier={multiplier} currencyFrom={["USD", "ILS"]} currencyTo="ILS" sub={false}  />
           <Text color="red">{errorMessage}</Text>
           <Button type="submit">תרום</Button>
         </Stack>
