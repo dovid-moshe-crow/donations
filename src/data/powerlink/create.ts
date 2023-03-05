@@ -1,3 +1,6 @@
+/* eslint-disable */
+
+
 import axios from "axios";
 
 async function createRow(objectType: string, object: Record<string, string>) {
