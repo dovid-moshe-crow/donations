@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { GoogleSpreadsheet } from "google-spreadsheet";
 
 async function getDoc(sheetId: string | undefined) {
