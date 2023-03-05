@@ -1,3 +1,6 @@
+/* eslint-disable */
+
+
 export default class Cache<Key, Value> {
     private _cache: Map<Key, { value: Value; time: Date }>;
     private _time: number;
