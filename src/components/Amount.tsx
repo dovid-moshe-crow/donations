@@ -23,26 +23,43 @@ function Amount({
   subName?: string;
   noLimitValue?: string;
 }) {
-  const { data } = api.currencyConverter.rates.useQuery({
+  const { data, isError, isLoading } = api.currencyConverter.rates.useQuery({
     from: currencyFrom,
     to: currencyTo,
   });
-  const [amount, setAmount] = useState(1);
-  const [payments, setPayments] = useState("1");
+
   const [currency, setCurrency] = useState(currencyFrom[0]!);
-  const [realAmount, setRealAmount] = useState(0);
+  const [minValue, setMinValue] = useState(0);
+  const [amount, setAmount] = useState(0);
+  const [payments, setPayments] = useState("1");
+
+  const [realAmount, setRealAmount] = useState(1);
+
+  useEffect(() => {
+    if (!data) return;
+    console.log(data.get(currency));
+    setAmount(data.get(currency)!.rate < 1 ? Math.ceil(data.get(currency)!.rate) : 1);
+  }, [isLoading]);
 
   useEffect(() => {
     if (!data) return;
     setRealAmount(Math.floor(amount * data.get(currency)!.rate));
+    setMinValue(  data.get(currency)!.rate < 1 ?  Math.ceil(1 / data.get(currency)!.rate) : 1);
+    if (amount < minValue) setAmount(minValue);
   }, [amount, currency]);
 
-  if (!data) return <Text>Error</Text>;
+  if (isError) return <Text>Error</Text>;
+  if (isLoading)
+    return (
+      <>
+        {sub ?? <Checkbox label="תרומה חוזרת" />}
+        <TextInput label={label} disabled></TextInput>
+      </>
+    );
 
   const countries: { value: string; label: string }[] = [];
 
   for (const x of data.entries()) {
-    console.log(x);
     countries.push({ value: x[0], label: x[1].flag });
   }
 
@@ -79,7 +96,7 @@ function Amount({
         <TextInput
           className="w-full"
           type="number"
-          min={1}
+          min={minValue}
           required
           value={amount}
           onChange={(e) => setAmount(parseInt(e.target.value))}

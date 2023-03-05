@@ -8,50 +8,38 @@ import {
   Button,
   Text,
   Select,
+  LoadingOverlay,
+  Box,
 } from "@mantine/core";
+
+import { useDisclosure } from "@mantine/hooks";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import AmbSelect from "~/components/AmbSelect";
 import Amount from "~/components/Amount";
-import MultiSub from "~/components/MultiSub";
+import { api } from "~/utils/api";
 
 const NedarimCreditPage: NextPage = () => {
+  const [visible, { close, open }] = useDisclosure(false);
+  const [errorMessage, setErrorMessage] = useState();
+
   const router = useRouter();
-  const { Mosad1, Mosad2, Multiplier, id, amb } = router.query;
+  const { id, amb } = router.query;
 
   const campaignId =
     typeof id === "string" ? id : "177b5cd5-2a69-4933-992e-1dd3599eb77e";
   const ambId = typeof amb === "string" ? amb : undefined;
-  const multiplier = parseInt(typeof Multiplier == "string" ? Multiplier : "1");
 
-  let paymentOptions: Record<string, { mosadId: string; apiValid: string }> =
-    {};
-
-  if (typeof Mosad1 == "string") {
-    const mosad1 = Mosad1.split(",");
-    paymentOptions[mosad1[0]!] = {
-      apiValid: mosad1[1]!,
-      mosadId: mosad1[2]!,
-    };
-  }
-
-  if (typeof Mosad2 == "string") {
-    const mosad2 = Mosad2.split(",");
-    paymentOptions[mosad2[0]!] = {
-      apiValid: mosad2[1]!,
-      mosadId: mosad2[2]!,
-    };
-  }
-
-  const [errorMessage, setErrorMessage] = useState();
+  const { data } = api.campaignsExcel.getById.useQuery(campaignId);
 
   useEffect(() => {
     const readPostMessage = (e: MessageEvent<any>) => {
       if (e.data.Name == "TransactionResponse") {
         console.log(e);
         if (e.data.Value.Status == "Error") {
+          close();
           setErrorMessage(e.data.Value.Message);
         } else {
           window.location.href = "https://yeshivatcy.co.il/";
@@ -65,8 +53,36 @@ const NedarimCreditPage: NextPage = () => {
     };
   });
 
+  if (!data) {
+    return (
+      <Box pos="relative">
+        <LoadingOverlay visible={true} overlayBlur={2} />
+      </Box>
+    );
+  }
+
+  //const multiplier = parseInt(typeof Multiplier == "string" ? Multiplier : "1");
+
+  let paymentOptions: Record<string, { mosadId: string; apiValid: string }> =
+    {};
+
+  if (data["mosad1 id"]) {
+    paymentOptions[data["mosad1 name"]] = {
+      apiValid: data["mosad1 apiValid"],
+      mosadId: data["mosad1 id"],
+    };
+  }
+  if (data["mosad2 id"]) {
+    paymentOptions[data["mosad2 name"]] = {
+      apiValid: data["mosad2 apiValid"],
+      mosadId: data["mosad2 id"],
+    };
+  }
+
   const onSubmitEv = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    open();
 
     var formData = new FormData(e.target as any);
     const formProps = Object.fromEntries(formData);
@@ -89,9 +105,9 @@ const NedarimCreditPage: NextPage = () => {
           City: formProps.city,
           Mail: formProps.email,
           Phone: formProps.phone,
-          Param1: `${formProps.anonymous == "on"},${
-            ambId ?? formProps.amb
-          },${multiplier}`,
+          Param1: `${formProps.anonymous == "on"},${ambId ?? formProps.amb},${
+            data["multiplier"]
+          }`,
           Comment: `${campaignId}`,
           Tashlumim: formProps.payments == "0" ? "" : formProps.payments,
           Amount: formProps.amount,
@@ -115,8 +131,8 @@ const NedarimCreditPage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <form dir="rtl" id="donation-form" onSubmit={onSubmitEv} className="p-6">
-        <Stack>
-          <AmbSelect campaignId={campaignId} ambassadorId={ambId} />
+        <Stack pos="relative">
+          <LoadingOverlay visible={visible} overlayBlur={2} />
           <TextInput name="full_name" required label="שם מלא" />
           <TextInput name="email" type="email" label="דואר אלקטרוני" />
           <TextInput name="phone" type="tel" label="טלפון נייד" />
@@ -124,6 +140,7 @@ const NedarimCreditPage: NextPage = () => {
           <TextInput name="city" type="text" label="עיר" />
           <Checkbox label="תרומה אנונימית" name="anonymous" />
           <Textarea name="dedication" label="הקדשה" />
+          <AmbSelect campaignId={campaignId} ambassadorId={ambId} />
           <Select
             label="סוג כרטיס"
             defaultValue={Object.keys(paymentOptions)[0]}
@@ -139,8 +156,8 @@ const NedarimCreditPage: NextPage = () => {
 
           <Amount
             label="סכום"
-            multiplier={multiplier}
-            currencyFrom={["USD", "ILS"]}
+            multiplier={parseInt(data["multiplier"])}
+            currencyFrom={["ILS", "USD"]}
             currencyTo="ILS"
             noLimitValue=""
             sub

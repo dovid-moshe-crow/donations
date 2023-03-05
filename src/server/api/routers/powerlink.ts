@@ -19,4 +19,9 @@ export const powerlinkRouter = createTRPCRouter({
     .query(async ({ input }) => {
       return await powerlink.ambassadors(input.campaignId, input.ambassadorId);
     }),
+
+    // createDonation: publicProcedure
+    //     .input(z.object(
+    
+    //     ))
 });

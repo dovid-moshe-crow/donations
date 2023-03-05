@@ -2,6 +2,7 @@
 
 import { load } from "cheerio";
 import axios from "axios";
+import Cache from "~/utils/cache";
 
 export const currencyCode = [
   "AFN",
@@ -165,16 +166,16 @@ function getCurrencyFlag(currencyCode: string): string {
 }
 export type CurrencyCode = (typeof currencyCode)[number];
 
-const cache: Map<CurrencyCode, { values: Map<CurrencyCode, { rate: number; flag: string }>; time: Date }> =
-  new Map();
+
+const cache = new Cache<
+  CurrencyCode,
+  Map<CurrencyCode, { rate: number; flag: string }>
+>(5 * 60 * 1000);
 
 export async function rates(to: CurrencyCode, from: CurrencyCode[]) {
-
-  if(cache.has(to) && (Date.now() - cache.get(to)!.time.getTime()) < (5 * 60 * 1000)){
-    return cache.get(to)!.values;
+  if (cache.has(to)) {
+    return cache.get(to)!;
   }
-  console.log("hi")
-  
 
   const rateList: Map<CurrencyCode, { rate: number; flag: string }> = new Map();
 
@@ -199,7 +200,7 @@ export async function rates(to: CurrencyCode, from: CurrencyCode[]) {
     });
   }
 
-  cache.set(to,{time: new Date(),values:rateList});
+  cache.set(to, rateList);
 
   return rateList;
 }
