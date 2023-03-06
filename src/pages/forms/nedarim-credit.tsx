@@ -42,7 +42,7 @@ const NedarimCreditPage: NextPage = () => {
           close();
           setErrorMessage(e.data.Value.Message);
         } else {
-          window.location.href = "https://yeshivatcy.co.il/";
+          window.top!.location.href = "https://yeshivatcy.co.il/";
         }
       }
     };
@@ -81,6 +81,7 @@ const NedarimCreditPage: NextPage = () => {
 
   const onSubmitEv = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
 
     open();
 
