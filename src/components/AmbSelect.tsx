@@ -17,6 +17,8 @@ function AmbSelect({
 
   if (isLoading || isError) return <div></div>;
 
+  console.log(data)
+
   return (
     <>
       <TextInput type="hidden" name="campaign" value={campaignId} />

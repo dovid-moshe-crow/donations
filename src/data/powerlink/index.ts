@@ -19,7 +19,7 @@ async function ambassadors(
       {
         objecttype: "1020",
         sort_type: "desc",
-        fields: "pcfsystemfield333,pcfsystemfield326,customobject1020id",
+        fields: "name,pcfsystemfield326,customobject1020id",
         query: `(pcfsystemfield326 = ${campaignId})${
           ambsId ? " AND (customobject1020id = " + ambsId : ")"
         })`,
@@ -36,7 +36,7 @@ async function ambassadors(
     return result.data["data"]["Data"].map((x: Record<string, string>) => {
       return {
         value: x["customobject1020id"],
-        label: x["pcfsystemfield333"],
+        label: x["name"] ?? "",
       };
     });
   } catch {
