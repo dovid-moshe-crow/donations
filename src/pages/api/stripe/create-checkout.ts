@@ -50,7 +50,7 @@ export default async function handler(
   } catch (err: any) {
     const message = err?.message?.raw ?? err.message ?? err?.toString();
 
-    return res.redirect(302, `/error?message=${encodeURIComponent(message)}`);
+    return res.redirect(302, `/error?message=${encodeURIComponent(message)}&target=_top`);
   }
 }
 

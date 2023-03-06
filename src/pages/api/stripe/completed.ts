@@ -12,7 +12,7 @@ export default async function handler(
   );
   const months = parseInt(session.metadata?.months ?? "1");
 
-  return res.redirect(302, `https://yeshivatcy.co.il/`);
+  return res.redirect(302, `https://yeshivatcy.co.il/&target=_top`);
 
   // return res.redirect(
   //   302,
