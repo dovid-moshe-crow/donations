@@ -65,7 +65,7 @@ const BitPage: NextPage = () => {
           Mail: formProps.email?.toString() ?? "",
           Tashlumim: "1",
           Currency: "1",
-          Comment: `~${formProps.anonymous == "on"}~${campaignId}~${
+          Comment: `${formProps.anonymous == "on"}~${campaignId}~${
             formProps.amb
           }~${formProps.dedication}~${data["multiplier"]}`,
         }),
