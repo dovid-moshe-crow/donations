@@ -75,7 +75,7 @@ const BitPage: NextPage = () => {
     const json = await res.json();
 
     if (json.Status === "OK") {
-      window.location = json.Message;
+      window.top!.location = json.Message;
     } else {
       close();
       setErrorMessage(json.Message);
