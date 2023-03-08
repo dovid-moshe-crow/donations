@@ -15,9 +15,7 @@ function AmbSelect({
     ambassadorId,
   });
 
-  if (isLoading || isError) return <div></div>;
-
-  console.log(data)
+  if (isLoading || isError || data.length == 0) return <div></div>;
 
   return (
     <>
