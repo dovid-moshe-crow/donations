@@ -55,7 +55,6 @@ const BitPage: NextPage = () => {
       {
         method: "POST",
         body: new URLSearchParams({
-          CallBack: "https://yeshivatcy.co.il/",
           ApiValid: data["mosad1 apiValid"],
           MosadId: data["mosad1 id"],
           ClientName: formProps.full_name?.toString() ?? "",

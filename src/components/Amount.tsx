@@ -41,16 +41,24 @@ function Amount({
     setAmount(
       data.get(currency)!.rate < 1 ? Math.ceil(data.get(currency)!.rate) : 1
     );
+    setRealAmount(Math.floor(amount * data.get(currency)!.rate));
+    setMinValue(
+      data.get(currency)!.rate < 1 ? Math.ceil(1 / data.get(currency)!.rate) : 1
+    );
   }, [isLoading]);
 
   useEffect(() => {
     if (!data) return;
     setRealAmount(Math.floor(amount * data.get(currency)!.rate));
+  }, [amount, currency]);
+
+  useEffect(() => {
+    if (!data) return;
     setMinValue(
       data.get(currency)!.rate < 1 ? Math.ceil(1 / data.get(currency)!.rate) : 1
     );
     if (amount < minValue) setAmount(minValue);
-  }, [amount, currency]);
+  }, [currency]);
 
   if (isError) return <Text>Error</Text>;
   if (isLoading)
