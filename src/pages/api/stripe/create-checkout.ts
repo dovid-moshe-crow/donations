@@ -46,7 +46,10 @@ export default async function handler(
       metadata,
     });
 
-    res.redirect(302, session.url!);
+    //res.redirect(302, session.url! + "?target=_top");
+
+    res.setHeader('Content-Type', 'text/html');
+    res.send(`<script>window.top.location.href = "${session.url!}";</script>`);
   } catch (err: any) {
     const message = err?.message?.raw ?? err.message ?? err?.toString();
 
