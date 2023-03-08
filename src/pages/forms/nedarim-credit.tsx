@@ -82,7 +82,6 @@ const NedarimCreditPage: NextPage = () => {
   const onSubmitEv = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-
     open();
 
     var formData = new FormData(e.target as any);
@@ -106,8 +105,8 @@ const NedarimCreditPage: NextPage = () => {
           City: formProps.city,
           Mail: formProps.email,
           Phone: formProps.phone,
-          Param1: `${formProps.anonymous == "on"},${ambId ?? formProps.amb},${
-            data["multiplier"]
+          Param1: `${formProps.anonymous == "on"},${data["multiplier"]},${
+            ambId ?? formProps.amb
           }`,
           Comment: `${campaignId}`,
           Tashlumim: formProps.payments == "0" ? "" : formProps.payments,
