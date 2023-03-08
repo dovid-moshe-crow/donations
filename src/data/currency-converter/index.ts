@@ -160,6 +160,7 @@ function getCurrencyFlag(currencyCode: string): string {
   const currencyFlagMappings: { [key: string]: string } = {
     USD: "USD 🇺🇸",
     ILS: "ILS 🇮🇱",
+    EUR: "EUR 🇪🇺"
   };
 
   return currencyFlagMappings[currencyCode] ?? "";

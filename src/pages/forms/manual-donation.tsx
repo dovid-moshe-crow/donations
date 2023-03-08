@@ -27,16 +27,15 @@ const ManualDonationPage: NextPage = () => {
   }
 
   return (
-    <form dir="rtl" id="donation-form" className="p-6" >
+    <form dir="rtl" id="donation-form" className="p-6">
       <Stack>
         <TextInput name="name" label="שם" />
         <Amount
-          currencyFrom={["ILS", "USD"]}
+          currencyFrom={["ILS", "USD", "EUR"]}
           currencyTo="ILS"
           multiplier={parseInt(data["multiplier"])}
           label="סכום"
           sub={false}
-
         />
       </Stack>
     </form>
