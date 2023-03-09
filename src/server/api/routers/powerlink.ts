@@ -23,7 +23,34 @@ export const powerlinkRouter = createTRPCRouter({
       return await powerlink.ambassadors(input.campaignId, input.ambassadorId);
     }),
 
-  //createAmbassador
+  createAmbassador: publicProcedure
+    .input(
+      z.object({
+        campaignId: z.string(),
+        nameTitle: z.string().optional(),
+        firstName: z.string(),
+        lastName: z.string(),
+        email: z.string().optional(),
+        phone: z.string().optional(),
+        target: z.number(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const data = await createRow("1020", {
+        pcfsystemfield326: input.campaignId,
+        pcfsTOHAR: input.nameTitle,
+        pcfsFIRSTNAME: input.firstName,
+        pcfFAMILY: input.firstName,
+        pcfsMAIL: input.email,
+        pcfPHONE: input.phone,
+        pcfsystemfield331: input.target.toString(),
+      });
+
+      return {
+        name: `${data["pcfsTOHAR"]} ${data["pcfsFIRSTNAME"]} ${data["pcfFAMILY"]}`,
+        target: data["pcfsystemfield331"],
+      };
+    }),
 
   recordDonation: publicProcedure
     .input(

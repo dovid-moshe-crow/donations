@@ -25,7 +25,7 @@ const BitPage: NextPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const router = useRouter();
-  const { Multiplier, id, amb } = router.query;
+  const { id, amb } = router.query;
 
   const campaignId =
     typeof id === "string" ? id : "177b5cd5-2a69-4933-992e-1dd3599eb77e";

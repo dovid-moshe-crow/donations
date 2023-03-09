@@ -46,7 +46,7 @@ const ManualDonationPage: NextPage = () => {
 
   if (donationResult) {
     return (
-      <Alert>
+      <Alert dir="rtl">
         <Text>
           נתרם ע"י {donationResult.name} {donationResult.amount} שקלים
         </Text>
