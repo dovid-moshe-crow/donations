@@ -51,7 +51,9 @@ const ManualDonationPage: NextPage = () => {
           נתרם ע"י {donationResult.name} {donationResult.amount} שקלים
         </Text>
 
-        <Button onClick={() => window.location.reload()}>לחזרה לדף התרומות</Button>
+        <Button onClick={() => window.location.reload()}>
+          לחזרה לדף התרומות
+        </Button>
       </Alert>
     );
   }
@@ -69,8 +71,10 @@ const ManualDonationPage: NextPage = () => {
       name: formProps["full_name"]!.toString(),
       amount: parseInt(formProps["amount"]!.toString()),
       displayName:
-        formProps["anonymous"] == "on"
-          ? formProps["full_name"]!.toString()
+        formProps["anonymous"] != "on"
+          ? `${formProps["name_title"]!.toString()} ${formProps[
+              "full_name"
+            ]!.toString()}`
           : "אנונימי",
       address: formProps["address"]?.toString(),
       email: formProps["email"]?.toString(),
@@ -89,11 +93,12 @@ const ManualDonationPage: NextPage = () => {
     <form dir="rtl" id="donation-form" className="p-6" onSubmit={onSubmitEv}>
       <Stack pos="relative">
         <LoadingOverlay visible={visible} overlayBlur={2} />
+        <TextInput name="name_title" label="תואר" />
         <TextInput name="full_name" required label="שם מלא" />
+        <Checkbox label="תרומה אנונימית" name="anonymous" />
         <TextInput name="email" type="email" label="דואר אלקטרוני" />
         <TextInput name="phone" type="tel" label="טלפון נייד" />
         <TextInput name="address" type="text" label="כתובת" />
-        <Checkbox label="תרומה אנונימית" name="anonymous" />
         <Textarea name="dedication" label="הקדשה" />
         <Textarea name="comments" label="הערות" />
         <Amount

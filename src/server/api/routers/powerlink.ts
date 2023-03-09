@@ -44,9 +44,9 @@ export const powerlinkRouter = createTRPCRouter({
           .optional()
           .transform((x) => {
             switch (x) {
-              case "ILS":
-                return "1";
               case "USD":
+                return "1";
+              case "ILS":
                 return "2";
               case "EUR":
                 return "3";
@@ -58,9 +58,9 @@ export const powerlinkRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       const r = await rates("USD", ["ILS"]);
-      console.log(r);
 
-      // find donnar
+
+      // find donor
 
       const donors = await query({
         objecttype: 1005,
@@ -99,6 +99,7 @@ export const powerlinkRouter = createTRPCRouter({
         pcfsystemfield139: input.amount.toString(),
         pcfsUSD: (input.amount * r.get("ILS")!.rate).toString(),
         pcfsystemfield288: input.displayName,
+        pcfsystemfield337: "8",
         pcfsystemfield493: input.collectionMethod,
         pcfsystemfield487: input.fundraiserName,
         pcfsystemfield491: input.fundraiserEmail,
