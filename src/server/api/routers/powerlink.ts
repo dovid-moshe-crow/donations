@@ -23,6 +23,8 @@ export const powerlinkRouter = createTRPCRouter({
       return await powerlink.ambassadors(input.campaignId, input.ambassadorId);
     }),
 
+  //createAmbassador
+
   recordDonation: publicProcedure
     .input(
       z.object({
@@ -59,7 +61,6 @@ export const powerlinkRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       const r = await rates("USD", ["ILS"]);
 
-
       // find donor
 
       const donors = await query({
@@ -82,6 +83,7 @@ export const powerlinkRouter = createTRPCRouter({
           pcfsystemfield94: input.email,
           pcfsystemfield124: input.address,
           pcfsystemfield92: input.phone,
+          pcfsystemfield383: "1",
         });
 
         donorId = donor["customobject1005id"];
