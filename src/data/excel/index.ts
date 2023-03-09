@@ -13,7 +13,11 @@ async function getDoc(sheetId: string | undefined) {
   return doc;
 }
 
-async function getFields<T extends readonly string[]>(doc: GoogleSpreadsheet, sheetName: string,keys: T) {
+async function getFields<T extends readonly string[]>(
+  doc: GoogleSpreadsheet,
+  sheetName: string,
+  keys: T
+) {
   await doc.loadInfo();
 
   const rows = await doc.sheetsByTitle[sheetName]?.getRows();
@@ -22,28 +26,18 @@ async function getFields<T extends readonly string[]>(doc: GoogleSpreadsheet, sh
     return [];
   }
 
-  
-
   const arr = [];
 
-  
-
-  for(const row of rows){
-    const e: Record<string,string> = {};
-    for(const x of keys){
+  for (const row of rows) {
+    const e: Record<string, string> = {};
+    for (const x of keys) {
       e[x] = row[x];
     }
 
     arr.push(e);
   }
 
- 
-
-
-   console.log(arr)
-
-
   return arr as { [K in T[number]]: string }[];
 }
 
-export default { getDoc,getFields };
+export default { getDoc, getFields };

@@ -1,8 +1,10 @@
 /* eslint-disable */
 
 import { z } from "zod";
+import { rates } from "~/data/currency-converter";
 import powerlink from "~/data/powerlink";
 import { createRow } from "~/data/powerlink/create";
+import query from "~/data/powerlink/query";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
@@ -55,10 +57,39 @@ export const powerlinkRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input }) => {
-      console.log("mutate")
+      const r = await rates("USD", ["ILS"]);
+      console.log(r);
+
+      // find donnar
+
+      const donors = await query({
+        objecttype: 1005,
+        fields: "customobject1005id",
+        page_size: 100,
+        sort_type: "desc",
+        query: new Map().set("pcfsystemfield190", input.name),
+      });
+
+      console.log("mutate");
+
+      let donorId: string | undefined;
+
+      if (donors && donors.length > 0) {
+        donorId = donors[0]!["customobject1005id"];
+      } else {
+        const donor = await createRow("1005", {
+          pcfsystemfield190: input.name,
+          pcfsystemfield94: input.email,
+          pcfsystemfield124: input.address,
+          pcfsystemfield92: input.phone,
+        });
+
+        donorId = donor["customobject1005id"];
+      }
 
       const data = await createRow("1009", {
         name: input.name,
+        pcfsystemfield137: donorId,
         pcfsyMAIL: input.email,
         pcfsADRESS: input.address,
         pcfsyPHONE: input.phone,
@@ -66,6 +97,7 @@ export const powerlinkRouter = createTRPCRouter({
         pcfsystemfield290: input.dedication,
         pcfsystemfield483: input.currency,
         pcfsystemfield139: input.amount.toString(),
+        pcfsUSD: (input.amount * r.get("ILS")!.rate).toString(),
         pcfsystemfield288: input.displayName,
         pcfsystemfield493: input.collectionMethod,
         pcfsystemfield487: input.fundraiserName,
@@ -73,8 +105,11 @@ export const powerlinkRouter = createTRPCRouter({
         pcfsystemfield489: input.fundraiserPhone,
         pcfsystemfield199: input.comments,
       });
-      
-      console.log(data)
+
+      return {
+        name: data["name"],
+        amount: data["pcfsystemfield139"],
+      };
     }),
 
   // createDonation: publicProcedure

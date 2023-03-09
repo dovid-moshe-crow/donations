@@ -10,7 +10,7 @@ type PowerlinkParams = {
   query?: Map<string, string>;
 };
 
-async function query(params: PowerlinkParams) {
+export default async function query(params: PowerlinkParams) {
   let queryString: string | undefined = undefined;
 
   if (params.query) {
@@ -44,7 +44,5 @@ async function query(params: PowerlinkParams) {
     }
   );
 
-  return result.data["data"]["Data"];
+  return result.data["data"]["Data"] as Array<Record<string, any>> | undefined;
 }
-
-export default {};

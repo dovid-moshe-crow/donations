@@ -169,16 +169,16 @@ export type CurrencyCode = (typeof currencyCode)[number];
 
 
 const cache = new Cache<
-  CurrencyCode,
+  string,
   Map<CurrencyCode, { rate: number; flag: string }>
 >(5 * 60 * 1000);
 
-export async function rates(to: CurrencyCode, from: CurrencyCode[]) {
-  if (cache.has(to)) {
-    return cache.get(to)!;
+export async function rates<Tto extends CurrencyCode,Tfrom extends CurrencyCode[]>(to: Tto, from: Tfrom) {
+  if (cache.has(`to-${from.join("")}`)) {
+    return cache.get(`to-${from.join("")}`)! as Map<Tfrom[number],{ rate: number; flag: string }>;
   }
 
-  const rateList: Map<CurrencyCode, { rate: number; flag: string }> = new Map();
+  const rateList: Map<Tfrom[number], { rate: number; flag: string }> = new Map();
 
   for (const x of from) {
     if (to == x) {
@@ -193,8 +193,6 @@ export async function rates(to: CurrencyCode, from: CurrencyCode[]) {
       await axios.get(`https://www.google.com/search?q=${x}+to+${to}+&hl=en`)
     ).data;
 
-    console.log(load(html)(".iBp4i").text());
-
     rateList.set(x, {
       rate: parseFloat(load(html)(".iBp4i").text().split(" ")[0] ?? ""),
       flag: getCurrencyFlag(x),
@@ -203,5 +201,5 @@ export async function rates(to: CurrencyCode, from: CurrencyCode[]) {
 
   cache.set(to, rateList);
 
-  return rateList;
+  return rateList as Map<Tfrom[number],{ rate: number; flag: string }>;
 }

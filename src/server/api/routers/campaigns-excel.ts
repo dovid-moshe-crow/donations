@@ -6,25 +6,9 @@ import excel from "~/data/excel";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
-type ExcelCampaign = {
-  id: string;
-  "mosad1 name": string;
-  "mosad1 id": string;
-  "mosad1 apiValid": string;
-  "mosad2 name": string;
-  "mosad2 id": string;
-  "mosad2 apiValid": string;
-  multiplier: string;
-};
-
 let doc: GoogleSpreadsheet = await excel.getDoc(process.env.CAMPAIGN_SHEET_ID);
 
-// (async () => {
-//   doc = ;
-// })();
-
 async function getCampaignFields() {
-  console.log("hi" + doc)
   return await excel.getFields(doc, "גיליון1", [
     "id",
     "mosad1 name",

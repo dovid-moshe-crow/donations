@@ -7,19 +7,23 @@ import {
   LoadingOverlay,
   Stack,
   Title,
+  Text,
   Textarea,
   TextInput,
   Group,
+  Alert,
   Select,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 
 import { NextPage } from "next";
-import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import Amount from "~/components/Amount";
 import { api } from "~/utils/api";
 
 const ManualDonationPage: NextPage = () => {
+  const [visible, { close, open }] = useDisclosure(false);
   const router = useRouter();
   const { id, amb } = router.query;
 
@@ -29,7 +33,8 @@ const ManualDonationPage: NextPage = () => {
 
   const { data } = api.campaignsExcel.getById.useQuery(campaignId);
 
-  const { mutate } = api.powerlink.recordDonation.useMutation();
+  const { mutate, data: donationResult } =
+    api.powerlink.recordDonation.useMutation();
 
   if (!data) {
     return (
@@ -39,10 +44,22 @@ const ManualDonationPage: NextPage = () => {
     );
   }
 
+  if (donationResult) {
+    return (
+      <Alert>
+        <Text>
+          נתרם ע"י {donationResult.name} {donationResult.amount} שקלים
+        </Text>
+
+        <Button onClick={() => window.location.reload()}>לחזרה לדף התרומות</Button>
+      </Alert>
+    );
+  }
+
   const onSubmitEv = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-  
+    open();
 
     var formData = new FormData(e.target as any);
     const formProps = Object.fromEntries(formData);
@@ -70,7 +87,8 @@ const ManualDonationPage: NextPage = () => {
 
   return (
     <form dir="rtl" id="donation-form" className="p-6" onSubmit={onSubmitEv}>
-      <Stack>
+      <Stack pos="relative">
+        <LoadingOverlay visible={visible} overlayBlur={2} />
         <TextInput name="full_name" required label="שם מלא" />
         <TextInput name="email" type="email" label="דואר אלקטרוני" />
         <TextInput name="phone" type="tel" label="טלפון נייד" />
