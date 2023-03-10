@@ -62,9 +62,13 @@ const BitPage: NextPage = () => {
           Mail: formProps.email?.toString() ?? "",
           Tashlumim: "1",
           Currency: "1",
-          Comment: `${formProps.anonymous == "on"}~${campaignId ?? ""}~${
-            formProps.amb ?? ""
-          }~${formProps.dedication}~${data["multiplier"]}`,
+          Comment: JSON.stringify({
+            anonymous: formProps.anonymous == "on",
+            campaignId: campaignId ?? "",
+            amb: formProps.amb ?? "",
+            dedication: formProps.dedication ?? "",
+            mulitplier: data["multiplier"],
+          }),
         }),
       }
     );
@@ -72,7 +76,7 @@ const BitPage: NextPage = () => {
     const json = await res.json();
 
     if (json.Status === "OK") {
-      window.open(json.Message, "_blank");
+      window.top!.open(json.Message, "_blank");
       //window.top!.location = json.Message;
       window.location.reload();
     } else {
