@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import {
-    Box,
+  Box,
   Button,
   Checkbox,
   LoadingOverlay,
@@ -9,30 +9,38 @@ import {
   Textarea,
   TextInput,
 } from "@mantine/core";
-import { NextPage } from "next";
+import { InferGetServerSidePropsType, NextApiResponse, NextPage } from "next";
 import Head from "next/head";
 import { useDisclosure } from "@mantine/hooks";
-import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AmbSelect from "~/components/AmbSelect";
 import Amount from "~/components/Amount";
 import MultiSub from "~/components/MultiSub";
 import { api } from "~/utils/api";
 
-const StripePage: NextPage = () => {
+export const getServerSideProps = async ({
+  query,
+}: {
+  res: NextApiResponse;
+  query: Record<string, string>;
+}) => {
+  return { props: { query } };
+};
+
+const StripePage = ({
+  query,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [visible, { close, open }] = useDisclosure(false);
 
-  const router = useRouter();
-
-  const { id, amb } = router.query;
+  const { id, amb } = query;
 
   const campaignId =
     typeof id === "string" ? id : "177b5cd5-2a69-4933-992e-1dd3599eb77e";
   const ambId = typeof amb === "string" ? amb : undefined;
 
-  const { data } = api.campaignsExcel.getById.useQuery(campaignId);
+  console.log(campaignId, ambId)
 
-  console.log(data)
+  const { data } = api.campaignsExcel.getById.useQuery(campaignId);
 
   if (!data) {
     return (
@@ -41,7 +49,6 @@ const StripePage: NextPage = () => {
       </Box>
     );
   }
-
 
   //const multiplier = parseInt(typeof Multiplier == "string" ? Multiplier : "1");
 
@@ -62,7 +69,11 @@ const StripePage: NextPage = () => {
       >
         <Stack pos="relative">
           <LoadingOverlay visible={visible} overlayBlur={2} />
-          <TextInput type="hidden" value={data["multiplier"]} name="multiplier" />
+          <TextInput
+            type="hidden"
+            value={data["multiplier"]}
+            name="multiplier"
+          />
           <TextInput name="full_name" required label="שם מלא" />
           <TextInput name="email" type="email" label="דואר אלקטרוני" />
           <TextInput name="phone" type="tel" label="טלפון נייד" />

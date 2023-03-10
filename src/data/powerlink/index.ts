@@ -2,18 +2,11 @@
 
 import axios from "axios";
 
-
-
 async function ambassadors(
   campaignId: string,
   ambsId?: string
 ): Promise<Array<{ value: string; label: string }>> {
   try {
-    console.log(
-      `(pcfsystemfield326 = ${campaignId})${
-        ambsId ? " and \n(customobject1020id = " + ambsId : ")"
-      })`
-    );
     const result = await axios.post(
       "https://api.powerlink.co.il/api/query",
       {

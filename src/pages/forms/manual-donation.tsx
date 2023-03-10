@@ -18,16 +18,26 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
-import { NextPage } from "next";
+import { InferGetServerSidePropsType, NextApiResponse, NextPage } from "next";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import Amount from "~/components/Amount";
 import { api } from "~/utils/api";
 
-const ManualDonationPage: NextPage = () => {
+export const getServerSideProps = async ({
+  query,
+}: {
+  res: NextApiResponse;
+  query: Record<string, string>;
+}) => {
+  return { props: { query } };
+};
+
+const ManualDonationPage = ({
+  query,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [visible, { close, open }] = useDisclosure(false);
-  const router = useRouter();
-  const { id, amb } = router.query;
+
+  const { id, amb } = query;
 
   const campaignId =
     typeof id === "string" ? id : "177b5cd5-2a69-4933-992e-1dd3599eb77e";

@@ -13,6 +13,8 @@ export default async function handler(
     const months = parseInt(req.body.months);
     const metadata = req.body;
 
+    console.log(metadata)
+
     const session = await stripe.checkout.sessions.create({
       customer_creation: months == 1 ? "always" : undefined,
       payment_intent_data:

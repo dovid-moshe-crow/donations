@@ -14,17 +14,28 @@ import {
   Group,
   Anchor,
 } from "@mantine/core";
-import { NextPage } from "next";
-import { useDisclosure } from "@mantine/hooks";
-import { api } from "~/utils/api";
-import { useRouter } from "next/router";
 
-const CreateAmb: NextPage = () => {
-  const router = useRouter();
-  const { id, amb } = router.query;
+import { useDisclosure } from "@mantine/hooks";
+import { InferGetServerSidePropsType, NextApiResponse } from "next";
+import { api } from "~/utils/api";
+
+export const getServerSideProps = async ({
+  query,
+}: {
+  res: NextApiResponse;
+  query: Record<string, string>;
+}) => {
+  return { props: { query } };
+};
+
+const CreateAmb = ({
+  query,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { id } = query;
 
   const campaignId =
     typeof id === "string" ? id : "177b5cd5-2a69-4933-992e-1dd3599eb77e";
+
   const [visible, { close, open }] = useDisclosure(false);
   const { data: createAmbResult, mutate } =
     api.powerlink.createAmbassador.useMutation();
@@ -53,7 +64,9 @@ const CreateAmb: NextPage = () => {
               <Button onClick={() => window.location.reload()}>
                 לחזרה לדף יצירת שגירים
               </Button>
-              <Anchor href="/landing/forms" align="center">למעבר לדף הראשי</Anchor>
+              <Anchor href="/landing/forms" align="center">
+                למעבר לדף הראשי
+              </Anchor>
             </Stack>
           </Card>
         </div>
