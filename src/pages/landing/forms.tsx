@@ -35,6 +35,12 @@ const FormsLandingPage: NextPage = () => {
               >
                 <Button>תרומה פקטיבית</Button>
               </Link>
+              <Link
+                href={`/forms/create-amb?id=${campaignId}`}
+                className="grid"
+              >
+                <Button>יצירת שגריר</Button>
+              </Link>
             </Stack>
           </Card>
         </div>
