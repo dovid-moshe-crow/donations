@@ -60,7 +60,6 @@ function Amount({
     if (amount < minValue) setAmount(minValue);
   }, [currency]);
 
-  if (isError) return <Text>Error</Text>;
   if (isLoading)
     return (
       <>
@@ -68,6 +67,8 @@ function Amount({
         <TextInput label={label} disabled></TextInput>
       </>
     );
+
+  if (isError) return <Text color="red">Error</Text>;
 
   const countries: { value: string; label: string }[] = [];
 

@@ -12,7 +12,10 @@ export default async function handler(
   );
   const months = parseInt(session.metadata?.months ?? "1");
 
-  return res.redirect(302, `https://yeshivatcy.co.il/&target=_top`);
+  res.setHeader("Content-Type", "text/html");
+  return res.send(
+    `<script>window.top.location.href = "https://yeshivatcy.co.il/";</script>`
+  );
 
   // return res.redirect(
   //   302,
