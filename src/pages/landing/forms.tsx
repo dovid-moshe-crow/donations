@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Button, Stack, Card } from "@mantine/core";
+import { Button, Stack, Card, Anchor } from "@mantine/core";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -15,7 +15,7 @@ const FormsLandingPage: NextPage = () => {
     <>
       <div className="flex h-screen items-center">
         <div className="container mx-auto flex items-center justify-center">
-          <Card withBorder w={400}>
+          <Card withBorder w={400} dir="rtl">
             <Stack>
               <Link href={`/forms/bit?id=${campaignId}`} className="grid">
                 <Button>Bit</Button>
@@ -41,6 +41,13 @@ const FormsLandingPage: NextPage = () => {
               >
                 <Button>יצירת שגריר</Button>
               </Link>
+              <Anchor
+                target={"_blank"}
+                href={`https://app.powerlink.co.il/app/record/1008/${campaignId}`}
+                align="center"
+              >
+                למעבר ל-crm
+              </Anchor>
             </Stack>
           </Card>
         </div>

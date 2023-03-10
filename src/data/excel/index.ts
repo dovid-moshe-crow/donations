@@ -40,4 +40,20 @@ async function getFields<T extends readonly string[]>(
   return arr as { [K in T[number]]: string }[];
 }
 
+async function addRow({
+  doc,
+  sheetName,
+  values,
+}: {
+  doc: GoogleSpreadsheet;
+  sheetName: string;
+  values: Record<string, string>;
+}) {
+  await doc.loadInfo();
+
+  const sheet = doc.sheetsByTitle[sheetName]!;
+
+  return await sheet.addRow(values);
+}
+
 export default { getDoc, getFields };

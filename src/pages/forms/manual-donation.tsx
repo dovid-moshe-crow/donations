@@ -14,6 +14,7 @@ import {
   Alert,
   Select,
   Card,
+  Anchor,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
@@ -69,6 +70,9 @@ const ManualDonationPage: NextPage = () => {
               <Button onClick={() => window.location.reload()}>
                 לחזרה לדף התרומות
               </Button>
+              <Anchor href="/landing/forms" align="center">
+                למעבר לדף הראשי
+              </Anchor>
             </Stack>
           </Card>
         </div>

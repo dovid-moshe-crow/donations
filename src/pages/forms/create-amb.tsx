@@ -12,6 +12,7 @@ import {
   LoadingOverlay,
   Card,
   Group,
+  Anchor,
 } from "@mantine/core";
 import { NextPage } from "next";
 import { useDisclosure } from "@mantine/hooks";
@@ -52,6 +53,7 @@ const CreateAmb: NextPage = () => {
               <Button onClick={() => window.location.reload()}>
                 לחזרה לדף יצירת שגירים
               </Button>
+              <Anchor href="/landing/forms" align="center">למעבר לדף הראשי</Anchor>
             </Stack>
           </Card>
         </div>

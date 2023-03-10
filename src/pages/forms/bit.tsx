@@ -41,8 +41,6 @@ const BitPage: NextPage = () => {
     );
   }
 
-
-
   const onSubmitEv = async (e: React.FormEvent<HTMLFormElement>) => {
     open();
     e.preventDefault();
@@ -64,8 +62,8 @@ const BitPage: NextPage = () => {
           Mail: formProps.email?.toString() ?? "",
           Tashlumim: "1",
           Currency: "1",
-          Comment: `${formProps.anonymous == "on"}~${campaignId}~${
-            formProps.amb
+          Comment: `${formProps.anonymous == "on"}~${campaignId ?? ""}~${
+            formProps.amb ?? ""
           }~${formProps.dedication}~${data["multiplier"]}`,
         }),
       }
@@ -74,7 +72,9 @@ const BitPage: NextPage = () => {
     const json = await res.json();
 
     if (json.Status === "OK") {
-      window.top!.location = json.Message;
+      window.open(json.Message, "_blank");
+      //window.top!.location = json.Message;
+      window.location.reload();
     } else {
       close();
       setErrorMessage(json.Message);
