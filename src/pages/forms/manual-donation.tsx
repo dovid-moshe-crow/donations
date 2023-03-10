@@ -51,7 +51,7 @@ const ManualDonationPage: NextPage = () => {
         <div className="container mx-auto flex items-center justify-center">
           <Card withBorder dir="rtl" w={600}>
             <Stack>
-              <Title align="center">פרטי השגריר</Title>
+              <Title align="center">פרטי התרומה</Title>
               <Group>
                 <Text color="blue" weight="bold">
                   שם:
