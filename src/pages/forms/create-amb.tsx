@@ -6,9 +6,12 @@ import {
   Stack,
   TextInput,
   Text,
+  Container,
   Alert,
   Title,
   LoadingOverlay,
+  Card,
+  Group,
 } from "@mantine/core";
 import { NextPage } from "next";
 import { useDisclosure } from "@mantine/hooks";
@@ -27,16 +30,32 @@ const CreateAmb: NextPage = () => {
 
   if (createAmbResult) {
     return (
-      <Alert dir="rtl">
-        <Text >
-          נוצר שגריר בשם {createAmbResult.name} עם יעד של{" "}
-          {createAmbResult.target} שקלים
-        </Text>
+      <div className="flex h-screen items-center">
+        <div className="container mx-auto flex items-center justify-center">
+          <Card withBorder dir="rtl" w={600}>
+            <Stack>
+              <Title align="center">פרטי השגריר</Title>
+              <Group>
+                <Text color="blue" weight="bold">
+                  שם:
+                </Text>
+                <Text weight="bold">{createAmbResult.name}</Text>
+              </Group>
 
-        <Button onClick={() => window.location.reload()}>
-          לחזרה לדף יצירת שגירים
-        </Button>
-      </Alert>
+              <Group>
+                <Text color="blue" weight="bold">
+                  יעד:
+                </Text>
+                <Text weight="bold">{createAmbResult.target}</Text>
+              </Group>
+
+              <Button onClick={() => window.location.reload()}>
+                לחזרה לדף יצירת שגירים
+              </Button>
+            </Stack>
+          </Card>
+        </div>
+      </div>
     );
   }
 

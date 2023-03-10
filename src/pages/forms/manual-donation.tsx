@@ -13,6 +13,7 @@ import {
   Group,
   Alert,
   Select,
+  Card,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
@@ -46,15 +47,32 @@ const ManualDonationPage: NextPage = () => {
 
   if (donationResult) {
     return (
-      <Alert dir="rtl">
-        <Text>
-          נתרם ע"י {donationResult.name} {donationResult.amount} שקלים
-        </Text>
+      <div className="flex h-screen items-center">
+        <div className="container mx-auto flex items-center justify-center">
+          <Card withBorder dir="rtl" w={600}>
+            <Stack>
+              <Title align="center">פרטי השגריר</Title>
+              <Group>
+                <Text color="blue" weight="bold">
+                  שם:
+                </Text>
+                <Text weight="bold">{donationResult.name}</Text>
+              </Group>
 
-        <Button onClick={() => window.location.reload()}>
-          לחזרה לדף התרומות
-        </Button>
-      </Alert>
+              <Group>
+                <Text color="blue" weight="bold">
+                  סכום:
+                </Text>
+                <Text weight="bold">{donationResult.amount}</Text>
+              </Group>
+
+              <Button onClick={() => window.location.reload()}>
+                לחזרה לדף התרומות
+              </Button>
+            </Stack>
+          </Card>
+        </div>
+      </div>
     );
   }
 
