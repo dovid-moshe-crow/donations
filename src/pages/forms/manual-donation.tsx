@@ -148,11 +148,13 @@ const ManualDonationPage = ({
         <Select
           label="נאסף"
           name="collection_method"
+          defaultValue="5"
           data={[
             { label: `הו"ק`, value: "1" },
             { label: `מזומן`, value: "2" },
             { label: `העברה בנקאית`, value: "3" },
             { label: `אחר`, value: "4" },
+            { label: `לא`, value: "5" },
           ]}
         ></Select>
         <Button type="submit">תרום</Button>

@@ -120,16 +120,18 @@ function Amount({
         />
         {multiplier != 1 && (
           <Text color={"dimmed"}>
-            X{multiplier}: {multiplier * amount}
+            אתה תורם {amount} {currency} ואנחנו נקבל {realAmount} {currencyTo}
           </Text>
         )}
-        <Text color={"dimmed"}>
-          תחויב ב- {currencyTo} {realAmount}
-          {payments != "1" && payments != noLimitValue
-            ? `ל-${payments} חודשים`
-            : ""}{" "}
-          {payments === noLimitValue ? "כל חודש" : ""}
-        </Text>
+        {currency != currencyTo && (
+          <Text color={"dimmed"}>
+            תחויב ב- {currencyTo} {realAmount}
+            {payments != "1" && payments != noLimitValue
+              ? `ל-${payments} חודשים`
+              : ""}{" "}
+            {payments === noLimitValue ? "כל חודש" : ""}
+          </Text>
+        )}
       </div>
     </>
   );

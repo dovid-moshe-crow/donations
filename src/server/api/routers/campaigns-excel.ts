@@ -18,6 +18,7 @@ async function getCampaignFields() {
     "mosad2 id",
     "mosad2 apiValid",
     "multiplier",
+    "שם קמפיין",
   ] as const);
 }
 
