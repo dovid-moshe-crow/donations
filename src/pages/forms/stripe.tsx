@@ -38,7 +38,7 @@ const StripePage = ({
     typeof id === "string" ? id : "177b5cd5-2a69-4933-992e-1dd3599eb77e";
   const ambId = typeof amb === "string" ? amb : undefined;
 
-  console.log(campaignId, ambId)
+  console.log(campaignId, ambId);
 
   const { data } = api.campaignsExcel.getById.useQuery(campaignId);
 

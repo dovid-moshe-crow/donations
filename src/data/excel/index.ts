@@ -47,7 +47,7 @@ async function addRow({
 }: {
   doc: GoogleSpreadsheet;
   sheetName: string;
-  values: Record<string, string>;
+  values: Record<string, string | number | boolean>;
 }) {
   await doc.loadInfo();
 
@@ -56,4 +56,4 @@ async function addRow({
   return await sheet.addRow(values);
 }
 
-export default { getDoc, getFields };
+export default { getDoc, getFields, addRow };

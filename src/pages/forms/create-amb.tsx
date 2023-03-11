@@ -38,7 +38,7 @@ const CreateAmb = ({
 
   const [visible, { close, open }] = useDisclosure(false);
   const { data: createAmbResult, mutate } =
-    api.powerlink.createAmbassador.useMutation();
+    api.ambassadors.createAmbassador.useMutation();
 
   if (createAmbResult) {
     return (
