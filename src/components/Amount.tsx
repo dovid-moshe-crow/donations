@@ -120,7 +120,7 @@ function Amount({
         />
         {multiplier != 1 && (
           <Text color={"dimmed"}>
-            אתה תורם {amount} {currency} ואנחנו נקבל {realAmount} {currencyTo}
+            אתה תורם {amount} {currency} ואנחנו נקבל {realAmount * multiplier} {currencyTo}
           </Text>
         )}
         {currency != currencyTo && (
