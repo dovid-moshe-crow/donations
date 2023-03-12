@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { InferGetServerSidePropsType, NextApiResponse } from "next";
 import BitForm from "~/components/forms/Bit";
 import CreateAmb from "~/components/forms/CreateAmb";
