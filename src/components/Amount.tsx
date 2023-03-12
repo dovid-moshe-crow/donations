@@ -73,7 +73,7 @@ function Amount({
   const countries: { value: string; label: string }[] = [];
 
   for (const x of data.entries()) {
-    countries.push({ value: x[0], label: x[1].flag });
+    countries.push({ value: x[0], label: x[1].symbol });
   }
 
   const select = (
