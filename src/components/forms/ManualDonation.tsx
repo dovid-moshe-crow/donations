@@ -1,47 +1,34 @@
 /* eslint-disable */
 
 import {
-  Box,
   Button,
+  Card,
   Checkbox,
+  Group,
   LoadingOverlay,
+  Select,
   Stack,
-  Title,
-  Text,
   Textarea,
   TextInput,
-  Group,
-  Alert,
-  Select,
-  Card,
-  Anchor,
+  Title,
+  Text,
+  Anchor
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-
-import { InferGetServerSidePropsType, NextApiResponse, NextPage } from "next";
-import Link from "next/link";
-import Amount from "~/components/Amount";
 import { api } from "~/utils/api";
+import Amount from "../Amount";
+import LoadingScreen from "../LoadingScreen";
 
-export const getServerSideProps = async ({
-  query,
+const ManualDonation = ({
+  campaignId,
+  ambId,
+  lang = "he",
 }: {
-  res: NextApiResponse;
-  query: Record<string, string>;
+  campaignId: string;
+  ambId?: string;
+  lang: "he" | "en";
 }) => {
-  return { props: { query } };
-};
-
-const ManualDonationPage = ({
-  query,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [visible, { close, open }] = useDisclosure(false);
-
-  const { id, amb } = query;
-
-  const campaignId =
-    typeof id === "string" ? id : "177b5cd5-2a69-4933-992e-1dd3599eb77e";
-  const ambId = typeof amb === "string" ? amb : undefined;
 
   const { data } = api.campaignsExcel.getById.useQuery(campaignId);
 
@@ -49,18 +36,14 @@ const ManualDonationPage = ({
     api.powerlink.recordDonation.useMutation();
 
   if (!data) {
-    return (
-      <Box pos="relative">
-        <LoadingOverlay visible={true} overlayBlur={2} />
-      </Box>
-    );
+    return <LoadingScreen />;
   }
 
   if (donationResult) {
     return (
       <div className="flex h-screen items-center">
         <div className="container mx-auto flex items-center justify-center">
-          <Card withBorder dir="rtl" w={600}>
+          <Card withBorder dir={lang=="he" ? "rtl" : "ltr"} w={600}>
             <Stack>
               <Title align="center">פרטי התרומה</Title>
               <Group>
@@ -122,7 +105,7 @@ const ManualDonationPage = ({
   };
 
   return (
-    <form dir="rtl" id="donation-form" className="p-6" onSubmit={onSubmitEv}>
+    <form dir={lang=="he" ? "rtl" : "ltr"} id="donation-form" className="p-6" onSubmit={onSubmitEv}>
       <Stack pos="relative">
         <LoadingOverlay visible={visible} overlayBlur={2} />
         <TextInput name="name_title" label="תואר" />
@@ -137,8 +120,8 @@ const ManualDonationPage = ({
           currencyFrom={["ILS", "USD", "EUR"]}
           currencyTo="ILS"
           multiplier={parseInt(data["multiplier"])}
-          label="סכום"
           sub={false}
+          lang={lang}
         />
 
         <Title>פרטי מתרים</Title>
@@ -163,4 +146,4 @@ const ManualDonationPage = ({
   );
 };
 
-export default ManualDonationPage;
+export default ManualDonation;

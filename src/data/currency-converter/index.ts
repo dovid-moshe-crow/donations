@@ -160,31 +160,50 @@ function getCurrencyFlag(currencyCode: string): string {
   const currencyFlagMappings: { [key: string]: string } = {
     USD: "USD 🇺🇸",
     ILS: "ILS 🇮🇱",
-    EUR: "EUR 🇪🇺"
+    EUR: "EUR 🇪🇺",
   };
 
   return currencyFlagMappings[currencyCode] ?? "";
 }
-export type CurrencyCode = (typeof currencyCode)[number];
 
+function getCurrencySymbol(currencyCode: string): string {
+  const currencySymbolMappings: { [key: string]: string } = {
+    USD: "$",
+    ILS: "₪",
+    EUR: "€",
+  };
+
+  return currencySymbolMappings[currencyCode] ?? "";
+}
+export type CurrencyCode = (typeof currencyCode)[number];
 
 const cache = new Cache<
   string,
-  Map<CurrencyCode, { rate: number; flag: string }>
+  Map<CurrencyCode, { rate: number; flag: string; symbol: string }>
 >(5 * 60 * 1000);
 
-export async function rates<Tto extends CurrencyCode,Tfrom extends CurrencyCode[]>(to: Tto, from: Tfrom) {
+export async function rates<
+  Tto extends CurrencyCode,
+  Tfrom extends CurrencyCode[]
+>(to: Tto, from: Tfrom) {
   if (cache.has(`to-${from.join("")}`)) {
-    return cache.get(`to-${from.join("")}`)! as Map<Tfrom[number],{ rate: number; flag: string }>;
+    return cache.get(`to-${from.join("")}`)! as Map<
+      Tfrom[number],
+      { rate: number; flag: string; symbol: string }
+    >;
   }
 
-  const rateList: Map<Tfrom[number], { rate: number; flag: string }> = new Map();
+  const rateList: Map<
+    Tfrom[number],
+    { rate: number; flag: string; symbol: string }
+  > = new Map();
 
   for (const x of from) {
     if (to == x) {
       rateList.set(x, {
         rate: 1,
         flag: getCurrencyFlag(x),
+        symbol: getCurrencySymbol(x),
       });
 
       continue;
@@ -196,10 +215,14 @@ export async function rates<Tto extends CurrencyCode,Tfrom extends CurrencyCode[
     rateList.set(x, {
       rate: parseFloat(load(html)(".iBp4i").text().split(" ")[0] ?? ""),
       flag: getCurrencyFlag(x),
+      symbol: getCurrencySymbol(x),
     });
   }
 
   cache.set(to, rateList);
 
-  return rateList as Map<Tfrom[number],{ rate: number; flag: string }>;
+  return rateList as Map<
+    Tfrom[number],
+    { rate: number; flag: string; symbol: string }
+  >;
 }

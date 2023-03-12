@@ -1,41 +1,28 @@
 /* eslint-disable */
 
 import {
-  Button,
-  NumberInput,
   Stack,
-  TextInput,
-  Text,
-  Container,
-  Alert,
-  Title,
   LoadingOverlay,
+  Title,
+  TextInput,
+  NumberInput,
+  Button,
   Card,
+  Text,
   Group,
   Anchor,
 } from "@mantine/core";
-
 import { useDisclosure } from "@mantine/hooks";
-import { InferGetServerSidePropsType, NextApiResponse } from "next";
 import { api } from "~/utils/api";
 
-export const getServerSideProps = async ({
-  query,
-}: {
-  res: NextApiResponse;
-  query: Record<string, string>;
-}) => {
-  return { props: { query } };
-};
-
 const CreateAmb = ({
-  query,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { id } = query;
+  campaignId,
+  lang,
+}: {
+  campaignId: string;
 
-  const campaignId =
-    typeof id === "string" ? id : "177b5cd5-2a69-4933-992e-1dd3599eb77e";
-
+  lang: "he" | "en";
+}) => {
   const [visible, { close, open }] = useDisclosure(false);
   const { data: createAmbResult, mutate } =
     api.ambassadors.createAmbassador.useMutation();
@@ -44,7 +31,7 @@ const CreateAmb = ({
     return (
       <div className="flex h-screen items-center">
         <div className="container mx-auto flex items-center justify-center">
-          <Card withBorder dir="rtl" w={600}>
+          <Card withBorder dir={lang=="he" ? "rtl" : "ltr"} w={600}>
             <Stack>
               <Title align="center">פרטי השגריר</Title>
               <Group>
@@ -93,7 +80,7 @@ const CreateAmb = ({
   };
 
   return (
-    <form dir="rtl" id="donation-form" className="p-6" onSubmit={onSubmitEv}>
+    <form dir={lang=="he" ? "rtl" : "ltr"} id="donation-form" className="p-6" onSubmit={onSubmitEv}>
       <Stack pos="relative">
         <LoadingOverlay visible={visible} overlayBlur={2} />
         <Title align="center">יצירת שגריר</Title>

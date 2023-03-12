@@ -6,9 +6,11 @@ import { api } from "~/utils/api";
 function AmbSelect({
   campaignId,
   ambassadorId,
+  lang,
 }: {
   campaignId: string;
   ambassadorId?: string;
+  lang: "he" | "en";
 }) {
   const { data, isLoading, isError } = api.powerlink.ambassadors.useQuery({
     campaignId,
@@ -25,10 +27,20 @@ function AmbSelect({
           <TextInput name="amb" value={data[0]?.label} readOnly />
         </>
       ) : (
-        <Select label="שגריר" searchable data={data} name="amb" />
+        <Select label={t[lang].amb} searchable data={data} name="amb" />
       )}
     </>
   );
 }
+
+const t = {
+  he: {
+    amb: "שגריר",
+  },
+
+  en: {
+    amb: "Ambassador",
+  },
+}as const;
 
 export default AmbSelect;

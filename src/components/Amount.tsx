@@ -7,21 +7,21 @@ import { CurrencyCode } from "~/data/currency-converter";
 import MultiSub from "./MultiSub";
 
 function Amount({
-  label,
   multiplier,
   currencyTo,
   currencyFrom,
   sub = false,
   noLimitValue,
   subName,
+  lang,
 }: {
-  label: string;
   multiplier: number;
   currencyTo: CurrencyCode;
   currencyFrom: CurrencyCode[];
   sub: boolean;
   subName?: string;
   noLimitValue?: string;
+  lang: "he" | "en";
 }) {
   const { data, isError, isLoading } = api.currencyConverter.rates.useQuery({
     from: currencyFrom,
@@ -63,8 +63,8 @@ function Amount({
   if (isLoading)
     return (
       <>
-        {sub ?? <Checkbox label="תרומה חוזרת" />}
-        <TextInput label={label} disabled></TextInput>
+        {sub ?? <Checkbox label={t[lang].recurringDonation} />}
+        <TextInput label={t[lang].amount} disabled></TextInput>
       </>
     );
 
@@ -113,28 +113,73 @@ function Amount({
           required
           value={amount}
           onChange={(e) => setAmount(parseInt(e.target.value))}
-          label={label}
+          label={t[lang].amount}
           rightSection={select}
           rightSectionWidth={90}
           mb={0}
         />
         {multiplier != 1 && (
           <Text color={"dimmed"}>
-            אתה תורם {amount} {currency} ואנחנו נקבל {amount * multiplier} {currency}
+            {t[lang].doublingMessage(
+              amount,
+              multiplier,
+              data.get(currency)!.symbol
+            )}
           </Text>
         )}
         {currency != currencyTo && (
           <Text color={"dimmed"}>
-            תחויב ב- {currencyTo} {realAmount}
-            {payments != "1" && payments != noLimitValue
-              ? `ל-${payments} חודשים`
-              : ""}{" "}
-            {payments === noLimitValue ? "כל חודש" : ""}
+            {t[lang].checkoutMessage(
+              data.get(currencyTo)!.symbol,
+              realAmount,
+              payments,
+              noLimitValue
+            )}
           </Text>
         )}
       </div>
     </>
   );
 }
+
+const t = {
+  he: {
+    recurringDonation: "תרומה חוזרת",
+    amount: "סכום",
+    doublingMessage: (amount: number, multiplier: number, currency: string) =>
+      `אתה תורם ${amount} ${currency} ואנחנו נקבל ${
+        amount * multiplier
+      } ${currency}`,
+    checkoutMessage: (
+      currencyTo: string,
+      realAmount: number,
+      payments: string,
+      noLimitValue?: string
+    ) => `תחויב ב- ${currencyTo} ${realAmount}${
+      payments != "1" && payments != noLimitValue ? `ל-${payments} חודשים` : ""
+    }
+    ${payments === noLimitValue ? "כל חודש" : ""}`,
+  },
+  en: {
+    recurringDonation: "Recurring Donation",
+    amount: "Amount",
+    doublingMessage: (amount: number, multiplier: number, currency: string) =>
+      `You are donating ${amount} ${currency} and we will get ${
+        amount * multiplier
+      } ${currency}`,
+
+    checkoutMessage: (
+      currencyTo: string,
+      realAmount: number,
+      payments: string,
+      noLimitValue?: string
+    ) =>
+      `You will be charged ${realAmount} ${currencyTo} ${
+        payments != "1" && payments != noLimitValue
+          ? `for ${payments} months`
+          : ""
+      }${payments === noLimitValue ? "every month" : ""}`,
+  },
+} as const;
 
 export default Amount;

@@ -29,3 +29,7 @@
 * `id` - the campaign id
 * `amb` - the ambassador id
 * `Multiplier` - number
+
+ils -> sybel
+en and hebrew
+donation display
