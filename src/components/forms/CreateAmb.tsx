@@ -14,24 +14,31 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { api } from "~/utils/api";
+import LoadingScreen from "../LoadingScreen";
 
 const CreateAmb = ({
   campaignId,
   lang,
 }: {
   campaignId: string;
-
   lang: "he" | "en";
 }) => {
   const [visible, { close, open }] = useDisclosure(false);
+
+  const { data } = api.campaignsExcel.getById.useQuery(campaignId);
+
   const { data: createAmbResult, mutate } =
     api.ambassadors.createAmbassador.useMutation();
+
+  if (!data) {
+    return <LoadingScreen />;
+  }
 
   if (createAmbResult) {
     return (
       <div className="flex h-screen items-center">
         <div className="container mx-auto flex items-center justify-center">
-          <Card withBorder dir={lang=="he" ? "rtl" : "ltr"} w={600}>
+          <Card withBorder dir={lang == "he" ? "rtl" : "ltr"} w={600}>
             <Stack>
               <Title align="center">פרטי השגריר</Title>
               <Group>
@@ -54,7 +61,10 @@ const CreateAmb = ({
               <Anchor href={`/landing/forms?id=${campaignId}`} align="center">
                 למעבר לדף הראשי
               </Anchor>
-              <Anchor href={`https://app.powerlink.co.il/app/record/1020/${createAmbResult.id}`} align="center">
+              <Anchor
+                href={`https://app.powerlink.co.il/app/record/1020/${createAmbResult.id}`}
+                align="center"
+              >
                 למעבר ל-crm
               </Anchor>
             </Stack>
@@ -83,10 +93,15 @@ const CreateAmb = ({
   };
 
   return (
-    <form dir={lang=="he" ? "rtl" : "ltr"} id="donation-form" className="p-6" onSubmit={onSubmitEv}>
+    <form
+      dir={lang == "he" ? "rtl" : "ltr"}
+      id="donation-form"
+      className="p-6"
+      onSubmit={onSubmitEv}
+    >
       <Stack pos="relative">
         <LoadingOverlay visible={visible} overlayBlur={2} />
-        <Title align="center">יצירת שגריר</Title>
+        <Title align="center">יצירת שגריר לקמפיין {data["שם קמפיין"]}</Title>
         <TextInput name="name_title" label="תואר" />
         <TextInput name="first_name" required label="שם פרטי" />
         <TextInput name="last_name" required label="שם משפחה" />

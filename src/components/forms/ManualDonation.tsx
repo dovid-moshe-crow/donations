@@ -112,6 +112,7 @@ const ManualDonation = ({
     <form dir={lang=="he" ? "rtl" : "ltr"} id="donation-form" className="p-6" onSubmit={onSubmitEv}>
       <Stack pos="relative">
         <LoadingOverlay visible={visible} overlayBlur={2} />
+        <Title align="center" >{data["שם קמפיין"]}</Title>
         <TextInput name="name_title" label="תואר" />
         <TextInput name="full_name" required label="שם מלא" />
         <Checkbox label="תרומה אנונימית" name="anonymous" />

@@ -218,15 +218,6 @@ export async function rates<
     ).data
   ).data as Record<string, number>;
 
-  // for(const x in data){
-  //   console.log(x)
-  //   rateList.set(to, {
-  //     rate: data[x]!,
-  //     flag: getCurrencyFlag(x),
-  //     symbol: getCurrencySymbol(x),
-  //   });
-  // }
-
   for (const x of from) {
     rateList.set(x, {
       rate: data[x]!,
@@ -234,27 +225,6 @@ export async function rates<
       symbol: getCurrencySymbol(x),
     });
   }
-
-  // for (const x of from) {
-  //   if (to == x) {
-  //     rateList.set(x, {
-  //       rate: 1,
-  //       flag: getCurrencyFlag(x),
-  //       symbol: getCurrencySymbol(x),
-  //     });
-
-  //     continue;
-  //   }
-  //   const html = await (
-  //     await axios.get(`https://api.freecurrencyapi.com/v1/latest?apikey=${process.env.CURRENCY_API}&base_currency=${to}&currencies=${from.join(",")}`)
-  //   ).data;
-
-  //   rateList.set(x, {
-  //     rate: parseFloat(load(html)(".iBp4i").text().split(" ")[0] ?? ""),
-  //     flag: getCurrencyFlag(x),
-  //     symbol: getCurrencySymbol(x),
-  //   });
-  // }
 
   cache.set(`${to}-${from.join(",")}`, rateList);
 
