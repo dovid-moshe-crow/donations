@@ -180,7 +180,8 @@ export type CurrencyCode = (typeof currencyCode)[number];
 const cache = new Cache<
   string,
   Map<CurrencyCode, { rate: number; flag: string; symbol: string }>
->(5 * 60 * 1000);
+>(12 * 60 * 60 * 1000);
+
 
 export async function rates<
   Tto extends CurrencyCode,
@@ -198,26 +199,47 @@ export async function rates<
     { rate: number; flag: string; symbol: string }
   > = new Map();
 
-  for (const x of from) {
-    if (to == x) {
-      rateList.set(x, {
-        rate: 1,
-        flag: getCurrencyFlag(x),
-        symbol: getCurrencySymbol(x),
-      });
+  const data = (await (
+    await axios.get(`https://api.freecurrencyapi.com/v1/latest?apikey=${process.env.CURRENCY_API}&base_currency=${to}&currencies=${from.join(",")}`)
+  ).data).data as Record<string,number>;
+   
+  // for(const x in data){
+  //   console.log(x)
+  //   rateList.set(to, {
+  //     rate: data[x]!,
+  //     flag: getCurrencyFlag(x),
+  //     symbol: getCurrencySymbol(x),
+  //   });
+  // }
 
-      continue;
-    }
-    const html = await (
-      await axios.get(`https://www.google.com/search?q=${x}+to+${to}+&hl=en`)
-    ).data;
-
+  for(const x of from){
     rateList.set(x, {
-      rate: parseFloat(load(html)(".iBp4i").text().split(" ")[0] ?? ""),
+      rate: data[x]!,
       flag: getCurrencyFlag(x),
       symbol: getCurrencySymbol(x),
     });
   }
+
+  // for (const x of from) {
+  //   if (to == x) {
+  //     rateList.set(x, {
+  //       rate: 1,
+  //       flag: getCurrencyFlag(x),
+  //       symbol: getCurrencySymbol(x),
+  //     });
+
+  //     continue;
+  //   }
+  //   const html = await (
+  //     await axios.get(`https://api.freecurrencyapi.com/v1/latest?apikey=${process.env.CURRENCY_API}&base_currency=${to}&currencies=${from.join(",")}`)
+  //   ).data;
+
+  //   rateList.set(x, {
+  //     rate: parseFloat(load(html)(".iBp4i").text().split(" ")[0] ?? ""),
+  //     flag: getCurrencyFlag(x),
+  //     symbol: getCurrencySymbol(x),
+  //   });
+  // }
 
   cache.set(to, rateList);
 
