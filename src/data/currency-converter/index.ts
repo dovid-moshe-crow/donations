@@ -190,8 +190,8 @@ export async function rates<
   Tfrom extends CurrencyCode[]
 >(to: Tto, from: Tfrom) {
   console.log(cache.has(`${to}-${from.join(",")}`))
-  if (cache.has(`${to}-${from.join("")}`)) {
-    return cache.get(`${to}-${from.join("")}`)! as Map<
+  if (cache.has(`${to}-${from.join(",")}`)) {
+    return cache.get(`${to}-${from.join(",")}`)! as Map<
       Tfrom[number],
       { rate: number; flag: string; symbol: string }
     >;
@@ -244,7 +244,7 @@ export async function rates<
   //   });
   // }
 
-  cache.set(`${to}-${from.join("")}`, rateList);
+  cache.set(`${to}-${from.join(",")}`, rateList);
 
   console.log("new")
 
