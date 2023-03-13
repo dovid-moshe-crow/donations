@@ -98,7 +98,7 @@ export const powerlinkRouter = createTRPCRouter({
         pcfsystemfield290: input.dedication,
         pcfsystemfield483: input.currency,
         pcfsystemfield139: input.amount.toString(),
-        pcfsUSD: (input.amount * r.get("ILS")!.rate).toString(),
+        pcfsUSD: (input.amount / r.get("ILS")!.rate).toString(),
         pcfsystemfield288: input.displayName,
         pcfsystemfield337: "8",
         pcfsystemfield493: input.collectionMethod,
@@ -106,7 +106,7 @@ export const powerlinkRouter = createTRPCRouter({
         pcfsystemfield491: input.fundraiserEmail,
         pcfsystemfield489: input.fundraiserPhone,
         pcfsystemfield199: input.comments,
-        pcfsystemfield445: input.multiplier.toString()
+        pcfsystemfield445: input.multiplier.toString(),
       });
 
       return {

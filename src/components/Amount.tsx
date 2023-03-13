@@ -23,10 +23,13 @@ function Amount({
   noLimitValue?: string;
   lang: "he" | "en";
 }) {
-  const { data, isError, isLoading } = api.currencyConverter.rates.useQuery({
-    from: currencyFrom,
-    to: currencyTo,
-  });
+  const { data, isError, isLoading } = api.currencyConverter.rates.useQuery(
+    {
+      from: currencyFrom,
+      to: currencyTo,
+    },
+    
+  );
 
   const [currency, setCurrency] = useState(currencyFrom[0]!);
   const [minValue, setMinValue] = useState(0);
@@ -43,7 +46,7 @@ function Amount({
     );
     setRealAmount(Math.floor(amount / data.get(currency)!.rate));
     setMinValue(
-      data.get(currency)!.rate > 1 ? Math.ceil( data.get(currency)!.rate) : 1
+      data.get(currency)!.rate > 1 ? Math.ceil(data.get(currency)!.rate) : 1
     );
   }, [isLoading]);
 
