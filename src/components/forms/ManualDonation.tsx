@@ -63,7 +63,7 @@ const ManualDonation = ({
               <Button onClick={() => window.location.reload()}>
                 לחזרה לדף התרומות
               </Button>
-              <Anchor href={`/landing/forms=${campaignId}`} align="center">
+              <Anchor href={`/landing/forms?id=${campaignId}`} align="center">
                 למעבר לדף הראשי
               </Anchor>
               <Anchor href={`https://app.powerlink.co.il/app/record/1009/${donationResult.id}`} align="center">

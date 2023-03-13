@@ -1,26 +1,44 @@
 /* eslint-disable */
+import Redis from "ioredis";
 
+let redis = new Redis(process.env.REDIS_URL!);
 
-export default class Cache<Key, Value> {
-    private _cache: Map<Key, { value: Value; time: Date }>;
-    private _time: number;
-    constructor(time: number) {
-      this._cache = new Map();
-      this._time = time;
-    }
-  
-    has(key: Key) {
-      return (
-        this._cache.has(key) &&
-        Date.now() - this._cache.get(key)!.time.getTime() < this._time
-      );
-    }
-  
-    get(key: Key) {
-      return this._cache.get(key)?.value;
-    }
-  
-    set(key: Key, value: Value) {
-      this._cache.set(key, { time: new Date(), value });
+export default class Cache<Key extends string, Value> {
+  private _seconds: number;
+  constructor(seconds: number) {
+    this._seconds = seconds;
+  }
+
+  async get(key: Key) {
+    const value = await redis.get(key);
+
+    console.log(value);
+
+    if (!value) return null;
+    return (await JSON.parse(value,reviver)) as Value;
+  }
+
+  async set(key: Key, value: Value) {
+    console.log(value);
+    await redis.setex(key, this._seconds, JSON.stringify(value,replacer));
+  }
+}
+
+function replacer(key: any, value: any) {
+  if (value instanceof Map) {
+    return {
+      dataType: "Map",
+      value: Array.from(value.entries()), // or with spread: value: [...value]
+    };
+  } else {
+    return value;
+  }
+}
+function reviver(key: any, value: any) {
+  if (typeof value === "object" && value !== null) {
+    if (value.dataType === "Map") {
+      return new Map(value.value);
     }
   }
+  return value;
+}

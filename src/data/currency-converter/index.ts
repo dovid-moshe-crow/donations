@@ -4,7 +4,7 @@ import { load } from "cheerio";
 import axios from "axios";
 import Cache from "~/utils/cache";
 
-console.log("restart page")
+console.log("restart page");
 
 export const currencyCode = [
   "AFN",
@@ -182,29 +182,41 @@ export type CurrencyCode = (typeof currencyCode)[number];
 const cache = new Cache<
   string,
   Map<CurrencyCode, { rate: number; flag: string; symbol: string }>
->(12 * 60 * 60 * 1000);
-
+>(12 * 60 * 60);
 
 export async function rates<
   Tto extends CurrencyCode,
   Tfrom extends CurrencyCode[]
 >(to: Tto, from: Tfrom) {
-  console.log(cache.has(`${to}-${from.join(",")}`))
-  if (cache.has(`${to}-${from.join(",")}`)) {
-    return cache.get(`${to}-${from.join(",")}`)! as Map<
-      Tfrom[number],
-      { rate: number; flag: string; symbol: string }
-    >;
+  //console.log(cache.has(`${to}-${from.join(",")}`))
+
+  const value = await cache.get(`${to}-${from.join(",")}`);
+
+  if (value) {
+    return value;
   }
+
+  // if (cache.has(`${to}-${from.join(",")}`)) {
+  //   return cache.get(`${to}-${from.join(",")}`)! as Map<
+  //     Tfrom[number],
+  //     { rate: number; flag: string; symbol: string }
+  //   >;
+  // }
 
   const rateList: Map<
     Tfrom[number],
     { rate: number; flag: string; symbol: string }
   > = new Map();
 
-  const data = (await (
-    await axios.get(`https://api.freecurrencyapi.com/v1/latest?apikey=${process.env.CURRENCY_API}&base_currency=${to}&currencies=${from.join(",")}`)
-  ).data).data as Record<string, number>;
+  const data = (
+    await (
+      await axios.get(
+        `https://api.freecurrencyapi.com/v1/latest?apikey=${
+          process.env.CURRENCY_API
+        }&base_currency=${to}&currencies=${from.join(",")}`
+      )
+    ).data
+  ).data as Record<string, number>;
 
   // for(const x in data){
   //   console.log(x)
@@ -246,10 +258,7 @@ export async function rates<
 
   cache.set(`${to}-${from.join(",")}`, rateList);
 
-  console.log("new")
+  console.log("new");
 
-  return rateList as Map<
-    Tfrom[number],
-    { rate: number; flag: string; symbol: string }
-  >;
+  return rateList;
 }
