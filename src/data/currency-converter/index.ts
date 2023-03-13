@@ -187,8 +187,9 @@ export async function rates<
   Tto extends CurrencyCode,
   Tfrom extends CurrencyCode[]
 >(to: Tto, from: Tfrom) {
-  if (cache.has(`to-${from.join("")}`)) {
-    return cache.get(`to-${from.join("")}`)! as Map<
+  console.log(cache.has(`${to}-${from.join("")}`))
+  if (cache.has(`${to}-${from.join("")}`)) {
+    return cache.get(`${to}-${from.join("")}`)! as Map<
       Tfrom[number],
       { rate: number; flag: string; symbol: string }
     >;
@@ -201,8 +202,8 @@ export async function rates<
 
   const data = (await (
     await axios.get(`https://api.freecurrencyapi.com/v1/latest?apikey=${process.env.CURRENCY_API}&base_currency=${to}&currencies=${from.join(",")}`)
-  ).data).data as Record<string,number>;
-   
+  ).data).data as Record<string, number>;
+
   // for(const x in data){
   //   console.log(x)
   //   rateList.set(to, {
@@ -212,7 +213,7 @@ export async function rates<
   //   });
   // }
 
-  for(const x of from){
+  for (const x of from) {
     rateList.set(x, {
       rate: data[x]!,
       flag: getCurrencyFlag(x),
@@ -241,7 +242,9 @@ export async function rates<
   //   });
   // }
 
-  cache.set(to, rateList);
+  cache.set(`${to}-${from.join("")}`, rateList);
+
+  console.log("new")
 
   return rateList as Map<
     Tfrom[number],
