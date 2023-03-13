@@ -51,8 +51,11 @@ const CreateAmb = ({
               <Button onClick={() => window.location.reload()}>
                 לחזרה לדף יצירת שגירים
               </Button>
-              <Anchor href="/landing/forms" align="center">
+              <Anchor href={`/landing/forms=${campaignId}`} align="center">
                 למעבר לדף הראשי
+              </Anchor>
+              <Anchor href={`https://app.powerlink.co.il/app/record/1020/${campaignId}`} align="center">
+                למעבר ל-crm
               </Anchor>
             </Stack>
           </Card>

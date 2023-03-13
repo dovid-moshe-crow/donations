@@ -63,8 +63,11 @@ const ManualDonation = ({
               <Button onClick={() => window.location.reload()}>
                 לחזרה לדף התרומות
               </Button>
-              <Anchor href="/landing/forms" align="center">
+              <Anchor href={`/landing/forms=${campaignId}`} align="center">
                 למעבר לדף הראשי
+              </Anchor>
+              <Anchor href={`https://app.powerlink.co.il/app/record/1009/${campaignId}`} align="center">
+                למעבר ל-crm
               </Anchor>
             </Stack>
           </Card>
@@ -84,6 +87,7 @@ const ManualDonation = ({
     mutate({
       campaignId,
       name: formProps["full_name"]!.toString(),
+      multiplier: parseInt(data["multiplier"]),
       amount: parseInt(formProps["amount"]!.toString()),
       displayName:
         formProps["anonymous"] != "on"

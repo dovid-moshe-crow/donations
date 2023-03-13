@@ -4,8 +4,6 @@ import {
   Stack,
   LoadingOverlay,
   TextInput,
-  Checkbox,
-  Textarea,
   Button,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";

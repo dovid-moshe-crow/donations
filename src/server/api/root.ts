@@ -3,6 +3,7 @@ import { ambassadorsRouter } from "~/server/api/routers/ambassadors";
 import { powerlinkRouter } from "./routers/powerlink";
 import { currencyConverterRouter } from "./routers/currency-converter";
 import { campaignsExcelRouter } from "./routers/campaigns-excel";
+import { donationRouter } from "./routers/donations";
 
 /**
  * This is the primary router for your server.
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
   ambassadors: ambassadorsRouter,
   currencyConverter: currencyConverterRouter,
   campaignsExcel: campaignsExcelRouter,
+  donations: donationRouter
 });
 
 // export type definition of API

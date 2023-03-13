@@ -1,7 +1,10 @@
 /* eslint-disable */
 
+import { Group, Stack } from "@mantine/core";
+import {} from "@mantine/core";
 import { InferGetServerSidePropsType, NextApiResponse } from "next";
 import BitForm from "~/components/forms/Bit";
+import CombinedForms from "~/components/forms/CombinedForms";
 import CreateAmb from "~/components/forms/CreateAmb";
 import ManualDonation from "~/components/forms/ManualDonation";
 import NedarimCredit from "~/components/forms/NedarimCredit";
@@ -25,8 +28,16 @@ const FormsPage = ({
     typeof id === "string" ? id : "177b5cd5-2a69-4933-992e-1dd3599eb77e";
   const ambId = typeof amb === "string" ? amb : undefined;
 
-  const lang = "he";
+  const lang = "en";
 
+  return <>
+    <FormToShow campaignId={campaignId} ambId={ambId} lang={lang} form={form}  />
+  </>
+
+
+};
+
+const FormToShow = ({ campaignId, lang, ambId, form }: { campaignId: string, ambId?: string, lang: "he" | "en"; form: unknown }) => {
   switch (form) {
     case "bit":
       return <BitForm lang={lang} campaignId={campaignId} ambId={ambId} />;
@@ -43,8 +54,8 @@ const FormsPage = ({
     case "create-amb":
       return <CreateAmb lang={lang} campaignId={campaignId} />;
     default:
-      return <></>;
+      return <CombinedForms />;
   }
-};
+}
 
 export default FormsPage;

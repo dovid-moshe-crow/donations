@@ -37,6 +37,7 @@ export const powerlinkRouter = createTRPCRouter({
         fundraiserPhone: z.string().optional(),
         fundraiserName: z.string().optional(),
         collectionMethod: z.string().optional(),
+        multiplier: z.number(),
         campaignId: z.string(),
         comments: z.string().optional(),
         currency: z
@@ -105,6 +106,7 @@ export const powerlinkRouter = createTRPCRouter({
         pcfsystemfield491: input.fundraiserEmail,
         pcfsystemfield489: input.fundraiserPhone,
         pcfsystemfield199: input.comments,
+        pcfsystemfield445: input.multiplier.toString()
       });
 
       return {
