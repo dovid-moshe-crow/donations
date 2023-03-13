@@ -4,6 +4,8 @@ import { load } from "cheerio";
 import axios from "axios";
 import Cache from "~/utils/cache";
 
+console.log("restart page")
+
 export const currencyCode = [
   "AFN",
   "ALL",
@@ -187,7 +189,7 @@ export async function rates<
   Tto extends CurrencyCode,
   Tfrom extends CurrencyCode[]
 >(to: Tto, from: Tfrom) {
-  console.log(cache.has(`${to}-${from.join("")}`))
+  console.log(cache.has(`${to}-${from.join(",")}`))
   if (cache.has(`${to}-${from.join("")}`)) {
     return cache.get(`${to}-${from.join("")}`)! as Map<
       Tfrom[number],
