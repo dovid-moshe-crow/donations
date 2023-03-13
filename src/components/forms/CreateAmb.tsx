@@ -54,7 +54,7 @@ const CreateAmb = ({
               <Anchor href={`/landing/forms=${campaignId}`} align="center">
                 למעבר לדף הראשי
               </Anchor>
-              <Anchor href={`https://app.powerlink.co.il/app/record/1020/${campaignId}`} align="center">
+              <Anchor href={`https://app.powerlink.co.il/app/record/1020/${createAmbResult.id}`} align="center">
                 למעבר ל-crm
               </Anchor>
             </Stack>

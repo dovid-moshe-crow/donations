@@ -66,7 +66,7 @@ const ManualDonation = ({
               <Anchor href={`/landing/forms=${campaignId}`} align="center">
                 למעבר לדף הראשי
               </Anchor>
-              <Anchor href={`https://app.powerlink.co.il/app/record/1009/${campaignId}`} align="center">
+              <Anchor href={`https://app.powerlink.co.il/app/record/1009/${donationResult.id}`} align="center">
                 למעבר ל-crm
               </Anchor>
             </Stack>

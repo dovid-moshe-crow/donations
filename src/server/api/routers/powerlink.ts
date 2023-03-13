@@ -110,6 +110,7 @@ export const powerlinkRouter = createTRPCRouter({
       });
 
       return {
+        id: data["customobject1009id"],
         name: data["name"],
         amount: data["pcfsystemfield139"],
       };

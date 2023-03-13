@@ -48,6 +48,7 @@ export const ambassadorsRouter = createTRPCRouter({
       });
 
       return {
+        id: data["customobject1020id"],
         name: `${data["pcfsTOHAR"]} ${data["pcfsFIRSTNAME"]} ${data["pcfFAMILY"]}`,
         target: data["pcfsystemfield331"],
       };
