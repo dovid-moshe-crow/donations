@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { createContext } from "react";
 import { useContext } from "react";
 export const LanguageContext = createContext<{
