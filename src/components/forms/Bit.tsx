@@ -1,5 +1,5 @@
 /* eslint-disable */
-
+import { isMobile } from "react-device-detect";
 import {
   Stack,
   LoadingOverlay,
@@ -17,6 +17,7 @@ import AmbSelect from "../AmbSelect";
 import Amount from "../Amount";
 import LoadingScreen from "../LoadingScreen";
 import PersonalInfo from "../PersonaInfo";
+import BarCodeDisplay from "../BarCodeDisplay";
 
 const BitForm = ({
   campaignId,
@@ -29,6 +30,7 @@ const BitForm = ({
 }) => {
   const [visible, { close, open }] = useDisclosure(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [barCode, setBarCode] = useState<string | undefined>();
 
   const { data } = api.campaignsExcel.getById.useQuery(campaignId);
 
@@ -71,15 +73,33 @@ const BitForm = ({
     const json = await res.json();
 
     if (json.Status === "OK") {
-      window.top!.location = json.Message;
+      if (isMobile) {
+        window.top!.location = json.Message;
+      } else {
+        setBarCode(json.Message);
+        close();
+      }
     } else {
       close();
       setErrorMessage(json.Message);
     }
   };
 
+  if (barCode) {
+    return (
+      <Stack align={"center"}>
+        <BarCodeDisplay text={barCode} />
+      </Stack>
+    );
+  }
+
   return (
-    <form dir={lang=="he" ? "rtl" : "ltr"} id="donation-form" onSubmit={onSubmitEv} className="p-6">
+    <form
+      dir={lang == "he" ? "rtl" : "ltr"}
+      id="donation-form"
+      onSubmit={onSubmitEv}
+      className="p-6"
+    >
       <Stack pos="relative">
         <LoadingOverlay visible={visible} overlayBlur={2} />
         <PersonalInfo lang={lang} fullNameRequired phoneRequired />
@@ -99,12 +119,12 @@ const BitForm = ({
 };
 
 const t = {
-    he : {
-        submit: "תרום"
-    },
-    en:{
-        submit: "Donate"
-    }
-}as const
+  he: {
+    submit: "תרום",
+  },
+  en: {
+    submit: "Donate",
+  },
+} as const;
 
 export default BitForm;
