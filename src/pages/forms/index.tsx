@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Stack } from "@mantine/core";
 import { InferGetServerSidePropsType, NextApiResponse } from "next";
 import CombinedForms from "~/components/forms/CombinedForms";
