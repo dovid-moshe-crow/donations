@@ -71,7 +71,7 @@ const FormToShow = ({
     case "create-amb":
       return <CreateAmb campaignId={campaignId} lang={lang} />;
     default:
-      return <CombinedForms />;
+      return <div></div>;
   }
 };
 

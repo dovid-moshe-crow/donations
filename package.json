@@ -12,6 +12,7 @@
   "dependencies": {
     "@adminjs/express": "^5.1.0",
     "@adminjs/prisma": "^3.0.1",
+    "@mantine/carousel": "^5.10.5",
     "@mantine/core": "^5.10.5",
     "@next-auth/prisma-adapter": "^1.0.5",
     "@prisma/client": "^4.9.0",
