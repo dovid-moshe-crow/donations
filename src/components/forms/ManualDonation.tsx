@@ -130,7 +130,7 @@ const ManualDonation = ({
         <Textarea name="dedication" label="הקדשה" />
         <Textarea name="comments" label="הערות" />
         <Amount
-          currencyFrom={["ILS", "USD", "EUR"]}
+          currencyFrom={["ILS", "USD"]}
           currencyTo="ILS"
           multiplier={parseInt(data["multiplier"])}
           sub={false}
