@@ -40,32 +40,32 @@ const CreateAmb = ({
         <div className="container mx-auto flex items-center justify-center">
           <Card withBorder dir={lang == "he" ? "rtl" : "ltr"} w={600}>
             <Stack>
-              <Title align="center">פרטי השגריר</Title>
+              <Title align="center">{t[lang].ambDetails}</Title>
               <Group>
                 <Text color="blue" weight="bold">
-                  שם:
+                  {t[lang].name}
                 </Text>
                 <Text weight="bold">{createAmbResult.name}</Text>
               </Group>
 
               <Group>
                 <Text color="blue" weight="bold">
-                  יעד:
+                  {t[lang].target}
                 </Text>
                 <Text weight="bold">{createAmbResult.target}</Text>
               </Group>
 
               <Button onClick={() => window.location.reload()}>
-                לחזרה לדף יצירת שגירים
+                {t[lang].backToAmb}
               </Button>
               <Anchor href={`/landing/forms?id=${campaignId}`} align="center">
-                למעבר לדף הראשי
+                {t[lang].backToMainPage}
               </Anchor>
               <Anchor
                 href={`https://app.powerlink.co.il/app/record/1020/${createAmbResult.id}`}
                 align="center"
               >
-                למעבר ל-crm
+                {t[lang].goToCrm}
               </Anchor>
             </Stack>
           </Card>
@@ -101,17 +101,57 @@ const CreateAmb = ({
     >
       <Stack pos="relative">
         <LoadingOverlay visible={visible} overlayBlur={2} />
-        <Title align="center">יצירת שגריר לקמפיין {data["שם קמפיין"]}</Title>
-        <TextInput name="name_title" label="תואר" />
-        <TextInput name="first_name" required label="שם פרטי" />
-        <TextInput name="last_name" required label="שם משפחה" />
-        <TextInput name="email" type="email" label="דואר אלקטרוני" />
-        <TextInput name="phone" type="tel" label="טלפון" />
-        <NumberInput name="target_amount" required min={0} label="יעד (₪)" />
-        <Button type="submit">צור שגריר</Button>
+        <Title align="center">{t[lang].title(data["שם קמפיין"])}</Title>
+        <TextInput name="name_title" label={t[lang].nameTitle} />
+        <TextInput name="first_name" required label={t[lang].firstName} />
+        <TextInput name="last_name" required label={t[lang].lastName} />
+        <TextInput name="email" type="email" label={t[lang].email} />
+        <TextInput name="phone" type="tel" label={t[lang].phone} />
+        <NumberInput
+          name="target_amount"
+          required
+          min={0}
+          label={t[lang].targetAmount}
+        />
+        <Button type="submit"> {t[lang].submit}</Button>
       </Stack>
     </form>
   );
 };
+
+const t = {
+  he: {
+    title: (name?: string) => `יצירת שגריר לקמפיין ${name}`,
+    nameTitle: "תואר",
+    firstName: "שם פרטי",
+    lastName: "שם משפחה",
+    email: "דואר אלקטרוני",
+    phone: "טלפון",
+    submit: "צור שגריר",
+    targetAmount: "יעד (₪)",
+    name: "שם:",
+    target: "יעד:",
+    backToAmb: "חזרה לדף יצירת שגרירים",
+    backToMainPage: "חזרה לדף הראשי",
+    goToCrm: "מעבר ל-crm",
+    ambDetails: "פרטי שגריר"
+  },
+  en: {
+    title: (name?: string) => `Create ambassador for ${name}`,
+    nameTitle: "Name Title",
+    firstName: "First Name",
+    lastName: "Last Name",
+    email: "Email",
+    phone: "Phone",
+    submit: "Create Ambassador",
+    targetAmount: "Target (₪)",
+    name: "Name:",
+    target: "Target:",
+    backToAmb: "Back to ambassador creation page",
+    backToMainPage: "Back to the main page",
+    goToCrm: "crm",
+    ambDetails: "Ambassador details"
+  },
+} as const;
 
 export default CreateAmb;

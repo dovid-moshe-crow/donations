@@ -9,25 +9,34 @@ const rtlCache = createEmotionCache({
   stylisPlugins: [rtlPlugin],
 });
 
+const ltrCache = createEmotionCache({
+  key: "mantine-ltr",
+});
+
 import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
+import { useState } from "react";
+import { LanguageContext } from "~/context/lang";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  const [lang, setLang] = useState<"he" | "en">("he");
   return (
-    <SessionProvider session={session}>
-         <MantineProvider
-      withGlobalStyles
-      withNormalizeCSS
-      emotionCache={rtlCache}
-      theme={{ dir: "rtl" }}
-    >
-      <Component {...pageProps} />
-      </MantineProvider>
-    </SessionProvider>
+    <LanguageContext.Provider value={{ lang, setLang }}>
+      <SessionProvider session={session}>
+        <MantineProvider
+          withGlobalStyles
+          withNormalizeCSS
+          emotionCache={lang == "he" ? rtlCache : ltrCache}
+          theme={{ dir: lang == "he" ? "rtl" : "ltr" }}
+        >
+          <Component {...pageProps} />
+        </MantineProvider>
+      </SessionProvider>
+    </LanguageContext.Provider>
   );
 };
 

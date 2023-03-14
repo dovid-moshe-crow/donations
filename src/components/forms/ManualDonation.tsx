@@ -12,7 +12,7 @@ import {
   TextInput,
   Title,
   Text,
-  Anchor
+  Anchor,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { api } from "~/utils/api";
@@ -43,7 +43,7 @@ const ManualDonation = ({
     return (
       <div className="flex h-screen items-center">
         <div className="container mx-auto flex items-center justify-center">
-          <Card withBorder dir={lang=="he" ? "rtl" : "ltr"} w={600}>
+          <Card withBorder dir={lang == "he" ? "rtl" : "ltr"} w={600}>
             <Stack>
               <Title align="center">פרטי התרומה</Title>
               <Group>
@@ -66,7 +66,10 @@ const ManualDonation = ({
               <Anchor href={`/landing/forms?id=${campaignId}`} align="center">
                 למעבר לדף הראשי
               </Anchor>
-              <Anchor href={`https://app.powerlink.co.il/app/record/1009/${donationResult.id}`} align="center">
+              <Anchor
+                href={`https://app.powerlink.co.il/app/record/1009/${donationResult.id}`}
+                align="center"
+              >
                 למעבר ל-crm
               </Anchor>
             </Stack>
@@ -109,10 +112,15 @@ const ManualDonation = ({
   };
 
   return (
-    <form dir={lang=="he" ? "rtl" : "ltr"} id="donation-form" className="p-6" onSubmit={onSubmitEv}>
+    <form
+      dir={lang == "he" ? "rtl" : "ltr"}
+      id="donation-form"
+      className="p-6"
+      onSubmit={onSubmitEv}
+    >
       <Stack pos="relative">
         <LoadingOverlay visible={visible} overlayBlur={2} />
-        <Title align="center" >{data["שם קמפיין"]}</Title>
+        <Title align="center">{data["שם קמפיין"]}</Title>
         <TextInput name="name_title" label="תואר" />
         <TextInput name="full_name" required label="שם מלא" />
         <Checkbox label="תרומה אנונימית" name="anonymous" />

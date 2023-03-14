@@ -106,14 +106,19 @@ const NedarimCredit = ({
   };
 
   return (
-    <form dir={lang=="he" ? "rtl" : "ltr"} id="donation-form" onSubmit={onSubmitEv} className="p-6">
+    <form
+      dir={lang == "he" ? "rtl" : "ltr"}
+      id="donation-form"
+      onSubmit={onSubmitEv}
+      className="p-6"
+    >
       <Stack pos="relative">
         <LoadingOverlay visible={visible} overlayBlur={2} />
         <PersonalInfo fullNameRequired lang={lang} />
         <AmbSelect campaignId={campaignId} ambassadorId={ambId} lang={lang} />
 
         <Select
-          label="סוג כרטיס"
+          label={t[lang].cardType}
           defaultValue={Object.keys(paymentOptions)[0]}
           data={Object.keys(paymentOptions)}
           name="card_type"
@@ -136,10 +141,21 @@ const NedarimCredit = ({
         />
 
         <Text color="red">{errorMessage}</Text>
-        <Button type="submit">תרום</Button>
+        <Button type="submit">{t[lang].payAction}</Button>
       </Stack>
     </form>
   );
 };
+
+const t = {
+  he: {
+    cardType: "סוג כרטיס",
+    payAction: "תרום",
+  },
+  en: {
+    cardType: "Card Type",
+    payAction: "Donate",
+  },
+} as const;
 
 export default NedarimCredit;

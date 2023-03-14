@@ -92,10 +92,19 @@ const BitForm = ({
           sub={false}
         />
         <Text color="red">{errorMessage}</Text>
-        <Button type="submit">תרום</Button>
+        <Button type="submit">{t[lang].submit}</Button>
       </Stack>
     </form>
   );
 };
+
+const t = {
+    he : {
+        submit: "תרום"
+    },
+    en:{
+        submit: "Donate"
+    }
+}as const
 
 export default BitForm;
