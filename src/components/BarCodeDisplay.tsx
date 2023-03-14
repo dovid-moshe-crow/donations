@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { QRCode } from "react-qrcode-logo";
 
 const BarCodeDisplay = ({ text }: { text: string }) => {

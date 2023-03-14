@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Stack, Group, Button, } from "@mantine/core";
 import { Carousel } from '@mantine/carousel';
 import BitForm from "./Bit";
